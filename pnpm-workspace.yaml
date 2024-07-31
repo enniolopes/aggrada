@@ -1,0 +1,4 @@
+packages:
+  - subsystems/app/*
+  - subsystems/datacenter/*
+  - subsystems/server/*

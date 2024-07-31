@@ -1,0 +1,16 @@
+{
+  "name": "@subsystems/api",
+  "version": "0.1.0",
+  "description": "Simple4Decision API",
+  "type": "module",
+  "scripts": {
+    "start": "tsx ./src/index.ts"
+  },
+  "dependencies": {
+    "tsx": "^4.16.3"
+  },
+  "devDependencies": {
+    "@ttoss/config": "^1.32.6",
+    "typescript": "^5.5.4"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalEnv": [
+    "DATABASE_HOST",
+    "DATABASE_HOST_READ_ONLY",
+    "DATABASE_NAME",
+    "DATABASE_PASSWORD",
+    "DATABASE_PORT",
+    "DATABASE_USERNAME"
+  ],
+  "pipeline": {
+    "//#lint": {
+      "outputs": []
+    },
+    "env": {
+      "outputs": [".env"]
+    }
+  }
+}
