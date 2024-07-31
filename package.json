@@ -1,0 +1,33 @@
+{
+  "private": true,
+  "name": "simple4decision",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "lint": "lint-staged --diff main --quiet",
+    "ls": "lerna ls",
+    "prepare": "husky",
+    "syncpack:fix": "syncpack fix-mismatches",
+    "syncpack:list": "syncpack list-mismatches"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@ttoss/config": "^1.32.6",
+    "@ttoss/eslint-config": "^1.24.8",
+    "eslint": "^8.57.0",
+    "husky": "^9.1.4",
+    "lint-staged": "15.2.5",
+    "prettier": "^3.3.3",
+    "syncpack": "^12.4.0",
+    "turbo": "^1.13.4",
+    "typescript": "^5.5.4"
+  },
+  "keywords": [],
+  "engines": {
+    "node": "^20.0.0",
+    "pnpm": "^9.0.0"
+  }
+}
