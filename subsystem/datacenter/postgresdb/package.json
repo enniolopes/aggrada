@@ -10,6 +10,7 @@
     "sync": "tsx scripts/sync.ts"
   },
   "dependencies": {
+    "pg": "^8.12.0",
     "sequelize": "^6.37.0",
     "sequelize-typescript": "^2.1.6"
   },
