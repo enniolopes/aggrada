@@ -7,6 +7,7 @@
   "scripts": {
     "build": "tsup",
     "env": "carlin env",
+    "installdb": "sudo docker compose -f docker-compose.yml up",
     "sync": "tsx scripts/sync.ts"
   },
   "dependencies": {
