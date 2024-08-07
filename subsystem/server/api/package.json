@@ -1,5 +1,5 @@
 {
-  "name": "@subsystems/api",
+  "name": "@subsystem/api",
   "version": "0.1.0",
   "description": "Simple4Decision API",
   "type": "module",
