@@ -10,14 +10,24 @@
     "DATABASE_NAME",
     "DATABASE_PASSWORD",
     "DATABASE_PORT",
-    "DATABASE_USERNAME"
+    "DATABASE_USERNAME",
+    "DATABASE_URL",
+    "REMOTE_HOST",
+    "REMOTE_IP",
+    "REMOTE_PORT",
+    "REMOTE_USER",
+    "REMOTE_PASSWORD",
+    "REMOTE_DIR",
+    "JWT_SECRET",
+    "PORT"
   ],
-  "pipeline": {
-    "//#lint": {
+  "tasks": {
+    "lint": {
+      "dependsOn": ["build"],
       "outputs": []
     },
-    "env": {
-      "outputs": [".env"]
+    "build": {
+      "outputs": ["build/**"]
     }
   }
 }
