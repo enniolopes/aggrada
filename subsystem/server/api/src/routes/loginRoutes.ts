@@ -34,7 +34,7 @@ loginRouter.post('/login', async (ctx: Router.RouterContext) => {
   } catch (err) {
     //console.error('Erro ao validar usuário:', err);
     ctx.status = 500;
-    ctx.body = { message: 'Erro interno do servidor' };
+    ctx.body = { message: 'Erro interno1 do servidor' };
   } finally {
     client.release(); // Libere o cliente após o uso
   }
