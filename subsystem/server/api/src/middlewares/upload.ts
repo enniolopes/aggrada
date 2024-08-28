@@ -49,7 +49,7 @@ export const uploadToRemote = async (
     await sftp.put(filePath, remotePath);
     await sftp.end();
   } catch (err) {
-    console.error(`Erro ao enviar o arquivo: ${(err as Error).message}`);
+    console.error(`Erro2 ao enviar o arquivo: ${(err as Error).message}`);
     throw err;
   } finally {
     // Ensure that the SFTP connection is closed even if an error occurs

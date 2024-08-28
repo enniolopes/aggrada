@@ -14,16 +14,14 @@ interface LoginRequestBody {
   password: string;
 }
 
-// Rota para fazer login
 loginRouter.post('/login', async (ctx: Router.RouterContext) => {
-  //console.log("LOGIN");
   const { username, password } = ctx.request.body as LoginRequestBody;
 
-  // Validação do usuário e senha no banco de dados
-  const client = await getClient(); // Obtém o cliente do Pool
+  const client = await getClient();
   try {
-    const result = await client.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password]);
-    
+    //const result = await client.query('SELECT * FROM users WHERE username = $1 AND password = $2', [username, password]);
+    const result = await client.query('SELECT * FROM "MULTIMAPAS".users WHERE username = $1 AND password = $2', [username, password]);
+
     if (result.rows.length > 0) {
       const token = jwt.sign({ username: result.rows[0].username }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
       ctx.body = { token };
@@ -32,13 +30,13 @@ loginRouter.post('/login', async (ctx: Router.RouterContext) => {
       ctx.body = { message: 'Credenciais Inválidas' };
     }
   } catch (err) {
-    //console.error('Erro ao validar usuário:', err);
     ctx.status = 500;
-    ctx.body = { message: 'Erro interno1 do servidor' };
+    ctx.body = { message: 'Erro interno do servidor' };
   } finally {
-    client.release(); // Libere o cliente após o uso
+    client.release();
   }
 });
+
 
 // eslint-disable-next-line import/no-default-export
 export default loginRouter;

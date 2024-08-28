@@ -16,7 +16,7 @@ const koa = new Koa();
 const router = new Router();
 
 koa.use(bodyParser());
-console.log("process.env.DATABASE_URL:",process.env.DATABASE_URL);
+// console.log("process.env.DATABASE_URL:",process.env.DATABASE_URL);
 
 
 //----------INICIO DA CONEXÃO COM POSTGRESQL------------------
