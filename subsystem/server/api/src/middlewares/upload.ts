@@ -31,6 +31,7 @@ export const uploadToRemote = async (
     if (value === undefined) {
       throw new Error(`A variável de ambiente ${name} não está definida.`);
     }
+    console.log(`Retrieved environment variable: ${name}=${value}`); // Log for debugging
     return value;
   };
   

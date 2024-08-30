@@ -1,39 +1,32 @@
-/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-// uploadRoutes.ts
-
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-console */
 import { Context, Next } from 'koa';
 import Router from 'koa-router';
 import SftpClient from 'ssh2-sftp-client';
 import dotenv from 'dotenv';
-import multer, { StorageEngine } from '@koa/multer';
+import multer from '@koa/multer'; // Importa a função para obter o cliente do Pool
 
 dotenv.config();
 
-const uploadRouter = new Router();
-//export const uploadRouter = new Router();
+// Configurando o multer para armazenar arquivos na pasta 'uploads/'
+const upload = multer({ dest: 'uploads/' });
+
 const sftp = new SftpClient();
+// Criando o router
+export const uploadRouter = new Router();
 
-// Configuração do multer para armazenar os arquivos temporariamente em './uploads'
-const storage: StorageEngine = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './uploads');
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, `${file.fieldname}-${uniqueSuffix}`);
-  },
-});
+// Middleware para lidar com uploads de arquivos
+const multerMiddleware = upload.any();
 
-// Middleware de upload usando multer
-const upload = multer({ storage });
+const uploadToRemote = async (path: string, filename: string): Promise<void> => {
 
-// Função para fazer upload do arquivo para o servidor remoto
-const uploadToRemote = async (
-  filePath: string,
-  fileName: string
-): Promise<void> => {
-  const config = {
+console.log('REMOTE_IP:', process.env.REMOTE_IP);
+console.log('REMOTE_PORT:', process.env.REMOTE_PORT);
+console.log('REMOTE_USER:', process.env.REMOTE_USER);
+console.log('REMOTE_PASSWORD:', process.env.REMOTE_PASSWORD);
+
+const config = {
     host: process.env.REMOTE_IP!,
     port: parseInt(process.env.REMOTE_PORT!, 10),
     username: process.env.REMOTE_USER!,
@@ -43,20 +36,28 @@ const uploadToRemote = async (
 
   try {
     await sftp.connect(config);
-    const remotePath = `${process.env.REMOTE_DIR}/${fileName}`;
+    const remotePath = `${process.env.REMOTE_DIR}/${filename}`;
     console.log(`RemotePath: ${remotePath}`);
-    await sftp.put(filePath, remotePath);
+    await sftp.put(path, remotePath);
     await sftp.end();
-    console.log(`Arquivo ${fileName} enviado com sucesso para ${remotePath}`);
+    console.log(`Arquivo ${filename} enviado com sucesso para ${remotePath}`);
   } catch (err) {
-    console.error(`Erro ao enviar o arquivo: ${(err as Error).message}`);
+    // Corrigir a inferência de tipo de erro
+    if (err instanceof Error) {
+      console.error(`Erro ao enviar o arquivo: ${err.message}`);
+    } else {
+      console.error('Erro desconhecido ao enviar o arquivo');
+    }
     throw err;
   }
+  console.log(`Arquivo ${filename} carregado para o servidor remoto.`);
 };
 
-// Endpoint para upload de arquivos
-uploadRouter.post('/upload', upload.any(), async (ctx: Context, next: Next) => {
-  console.log('UPLOAD');
+uploadRouter.post(
+  '/upload',
+  multerMiddleware,
+  async (ctx: Context, next: Next) => {
+  console.log("UPLOAD");
   try {
     // Logs para debugging
     console.log('ctx.request:', ctx.request);
@@ -64,16 +65,14 @@ uploadRouter.post('/upload', upload.any(), async (ctx: Context, next: Next) => {
     console.log('Arquivos recebidos:', ctx.request.files);
 
     // Checa se os arquivos estão no request body
-    if (
-      !ctx.request.files ||
-      (ctx.request.files as Express.Multer.File[]).length === 0
-    ) {
+    if (!ctx.request.files || (ctx.request.files as Express.Multer.File[]).length === 0) {
       ctx.throw(400, 'Nenhum arquivo para upload');
     }
 
     // Display detalhes dos arquivos recebidos
+    const files = ctx.request.files as Express.Multer.File[];
     console.log('Arquivos recebidos:');
-    for (const file of ctx.request.files as Express.Multer.File[]) {
+    for (const file of files) {
       console.log(`Original name: ${file.originalname}`);
       console.log(`Stored name: ${file.filename}`);
       console.log(`File type: ${file.mimetype}`);
@@ -87,24 +86,21 @@ uploadRouter.post('/upload', upload.any(), async (ctx: Context, next: Next) => {
 
     ctx.body = {
       message: 'Upload com sucesso',
-      files: (ctx.request.files as Express.Multer.File[]).map((file) => {
-        return {
-          originalName: file.originalname,
-          storedName: file.filename,
-          mimeType: file.mimetype,
-          path: file.path,
-          size: file.size,
-        };
-      }),
+      files: files.map((file) => { return {
+        originalName: file.originalname,
+        storedName: file.filename,
+        mimeType: file.mimetype,
+        path: file.path,
+        size: file.size
+      } })
     };
   } catch (err) {
-    console.error('Erro durante o upload:', err);
+    console.error('Erro durante o upload:', (err as Error).message);
     ctx.status = 500;
-    ctx.body = { message: 'Internal error durante o upload' };
+    ctx.body = { message: 'Erro durante o upload', error: (err as Error).message };
   }
 
   await next(); // Certifique-se de chamar next()
 });
-
 // eslint-disable-next-line import/no-default-export
 export default uploadRouter;

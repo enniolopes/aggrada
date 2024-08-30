@@ -4,11 +4,12 @@
 import { Pool } from 'pg';
 import Koa from 'koa';
 import Router from 'koa-router';
-import bodyParser from 'koa-bodyparser'; // Importa a classe Pool do pacote pg
-import delete_fileRouter from './routes/delete_fileRoutes';
-import dotenv from 'dotenv'; // Importa a rota de login
-import loginRouter from './routes/loginRoutes'; // Importa a rota de delete-file
-import uploadRouter from './routes/uploadRoutes'; // Importa a rota de upload
+import addDataRouter from './routes/addDataRoutes'; // Importa a classe Pool do pacote pg
+import bodyParser from 'koa-bodyparser';
+import delete_fileRouter from './routes/delete_fileRoutes'; // Importa a rota de login
+import dotenv from 'dotenv'; // Importa a rota de delete-file
+import loginRouter from './routes/loginRoutes'; // Importa a rota de upload
+import uploadRouter from './routes/uploadRoutes';
 
 dotenv.config();
 
@@ -42,6 +43,8 @@ koa.use(delete_fileRouter.routes());
 koa.use(delete_fileRouter.allowedMethods());
 koa.use(uploadRouter.routes());
 koa.use(uploadRouter.allowedMethods());
+koa.use(addDataRouter(pool).routes());
+koa.use(addDataRouter(pool).allowedMethods());
 
 const PORT = process.env.PORT || 3001;
 koa.listen(PORT, () => {

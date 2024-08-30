@@ -6,7 +6,6 @@
   "license": "ISC",
   "author": "",
   "scripts": {
-    "dev": "tsx src/server.ts",
     "preinstall": "npx only-allow pnpm",
     "lint": "lint-staged --diff main --quiet",
     "ls": "lerna ls",
