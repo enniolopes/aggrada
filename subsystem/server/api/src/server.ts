@@ -8,7 +8,8 @@ import addDataRouter from './routes/addDataRoutes'; // Importa a classe Pool do 
 import bodyParser from 'koa-bodyparser';
 import delete_fileRouter from './routes/delete_fileRoutes'; // Importa a rota de login
 import dotenv from 'dotenv'; // Importa a rota de delete-file
-import loginRouter from './routes/loginRoutes'; // Importa a rota de upload
+import listFilesRouter from './routes/listFilesRoutes'; // Importa a rota de upload
+import loginRouter from './routes/loginRoutes';
 import uploadRouter from './routes/uploadRoutes';
 
 dotenv.config();
@@ -32,6 +33,11 @@ pool.connect()
   .catch((err: Error) => { return console.error('Erro ao conectar ao banco de dados', err) });
 //----------FIM DA CONEXÃO COM POSTGRESQL------------------
 
+export const getClient = async () => {
+  const client = await pool.connect();
+  return client;
+};
+
 // Configuração das rotas no Koa
 koa.use(router.routes());
 koa.use(router.allowedMethods());
@@ -45,6 +51,9 @@ koa.use(uploadRouter.routes());
 koa.use(uploadRouter.allowedMethods());
 koa.use(addDataRouter(pool).routes());
 koa.use(addDataRouter(pool).allowedMethods());
+koa.use(listFilesRouter.routes());  
+koa.use(listFilesRouter.allowedMethods());
+
 
 const PORT = process.env.PORT || 3001;
 koa.listen(PORT, () => {

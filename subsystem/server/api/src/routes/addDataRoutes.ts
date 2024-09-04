@@ -35,7 +35,7 @@ export const addDataRouter = (pool: Pool) => {
       //   [user_id]
       // );
       const existingUser = await pool.query(
-        'SELECT * FROM public."Users" WHERE email = $1',
+        'SELECT * FROM "Users" WHERE email = $1',
         [email]
       );
 
@@ -49,7 +49,7 @@ export const addDataRouter = (pool: Pool) => {
       const query =
         // 'INSERT INTO "MULTIMAPAS".dados (user_id, descrição) VALUES ($1, $2)';
         // const values = [user_id, descrição];
-        'INSERT INTO public."Users" (email, password_hash, name, "createdAt", "updatedAt") VALUES ($1, $2, $3, NOW(), NOW())';
+        'INSERT INTO "Users" (email, password_hash, name, "createdAt", "updatedAt") VALUES ($1, $2, $3, NOW(), NOW())';
       const values = [email, password_hash, name];
       await pool.query(query, values);
 
