@@ -17,7 +17,7 @@ export const loadSequelize = async (options: SequelizeOptions) => {
      */
     dialect: 'postgres',
     define: {
-      underscored: true,
+      // underscored: true,
       timestamps: true,
     },
     models: Object.values(Models),
