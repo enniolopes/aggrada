@@ -1,214 +1,146 @@
-# Demo Outreach - Docker Orchestrator dos Containers de Jupyter Notebooks
+# Demo Outreach - Jupyter Notebooks Docker Orchestrator
 
-Este repositório contém o código-fonte de um Orquestrador Docker desenvolvido em Node.js com TypeScript. O objetivo do projeto é automatizar a implantação de notebooks Jupyter a partir de projetos armazenados em um repositório GitLab, gerenciando a construção de imagens Docker, envio para um Docker Registry privado e execução dos contêineres correspondentes.
+## Overview
 
-## Índice
+The Docker Orchestrator automates the creation, execution, and management of Docker containers from Jupyter notebooks stored in a GitLab repository. It handles Docker image building, pushing to the Docker Registry, and container deployment, as well as updating notebook URLs in the repository.
 
-- [Visão Geral](#visão-geral)
-- [Arquitetura do Projeto](#arquitetura-do-projeto)
-- [Pré-requisitos](#pré-requisitos)
-- [Configuração Inicial](#configuração-inicial)
-  - [1. Clonar o Repositório](#1-clonar-o-repositório)
-  - [2. Gerar a Chave SSH](#2-gerar-a-chave-ssh)
-  - [3. Configurar o GitLab](#3-configurar-o-gitlab)
-  - [4. Configurar o Arquivo de Ambiente](#4-configurar-o-arquivo-de-ambiente)
-  - [5. Instalar Dependências](#5-instalar-dependências)
-- [Uso do Orquestrador](#uso-do-orquestrador)
-  - [Iniciar o Orquestrador](#iniciar-o-orquestrador)
-  - [Parar e Remover o Orquestrador](#parar-e-remover-o-orquestrador)
-- [Estrutura do Projeto](#estrutura-do-projeto)
-- [Configurações](#configurações)
-- [Scripts Disponíveis](#scripts-disponíveis)
-- [Fluxo de Trabalho](#fluxo-de-trabalho)
-- [Considerações de Segurança](#considerações-de-segurança)
-- [Contribuição](#contribuição)
-- [Licença](#licença)
+## Features
+
+- **Full Automation**: Clones the GitLab repository, generates a Dockerfile for each notebook, builds the Docker image, pushes it to the Docker Registry, and runs the container.
+- **URL Management**: Automatically updates the `URL.md` file in the GitLab repository with the running notebook’s access URL.
+- **Multi-Project Support**: Manages multiple notebooks from different projects simultaneously.
+- **Deletion Detection**: Automatically removes Docker containers and images for notebooks deleted from the repository.
 
 ---
 
-## Visão Geral
+## Table of Contents
 
-O Docker Orchestrator automatiza o processo de implantação de notebooks Jupyter a partir de projetos em um repositório GitLab. Ele:
+1. [Requirements](#requirements)
+2. [Environment Setup](#environment-setup)
+   - [1. Environment Variables](#1-environment-variables)
+   - [2. Docker Compose](#2-docker-compose)
+   - [3. Configuring the GitLab Repository](#3-configuring-the-gitlab-repository)
+3. [Running the Orchestrator](#running-the-orchestrator)
+4. [API Endpoints](#api-endpoints)
+5. [Maintenance and Best Practices](#maintenance-and-best-practices)
+6. [Contribution](#contribution)
+7. [License](#license)
 
-- Clona ou atualiza o repositório GitLab.
-- Gera um Dockerfile personalizado para cada projeto de notebook.
-- Constrói a imagem Docker do notebook.
-- Envia a imagem para um Docker Registry privado.
-- Executa o contêiner Docker do notebook.
-- Atualiza o arquivo `URL.md` no GitLab com o link para acessar o notebook.
+---
 
-## Arquitetura do Projeto
+## Requirements
 
-- **Node.js com TypeScript**: Linguagem de programação e tipagem estática.
-- **Express.js**: Framework web para criar uma API REST.
-- **Dockerode**: Biblioteca para interagir com o Docker via Node.js.
-- **Simple-Git**: Biblioteca para operações Git em Node.js.
-- **pnpm**: Gerenciador de pacotes rápido e eficiente.
-- **tsx**: Ferramenta para executar arquivos TypeScript diretamente.
+Before starting, make sure your environment meets the following requirements:
 
-## Pré-requisitos
+- **Docker** installed on the server where the orchestrator will run.
+- **Docker Compose** installed to manage the orchestrator container.
+- **GitLab Access Token** with read and write permissions to the notebooks repository.
+- **Docker Registry** set up to store the generated Docker images.
+- **Node.js** and **pnpm** as the package manager.
 
-- **Node.js** versão 20 ou superior.
-- **Docker** instalado e em execução.
-- **pnpm** instalado globalmente.
-- Acesso ao repositório GitLab com os projetos de notebooks.
-- Acesso ao Docker Registry privado (`registry.simple4decision.com`).
+---
 
-## Configuração Inicial
+## Environment Setup
 
-### 1. Gerar a Chave SSH
+### 1. Environment Variables
 
-Gere uma chave SSH específica para o orquestrador:
+The orchestrator relies on several environment variables to communicate with the GitLab repository and Docker Registry. These variables should be defined in the `.env` file.
 
-```bash
-ssh-keygen -t rsa -b 4096 -C "outreach" -f ~/outreach_id_rsa
-chmod 600 ~/outreach_id_rsa
-```
-
-### 2. Configurar o GitLab
-
-- **Adicionar a Chave Pública**: Vá até **Settings > Repository > Deploy Keys** no GitLab.
-- **Adicionar Chave**: Cole o conteúdo de `~/outreach_id_rsa.pub`.
-- **Permissões**: Marque a opção **"Write access"** para permitir commits.
-
-### 3. Configurar o Arquivo de Ambiente
-
-Crie o arquivo `.env` na raiz do projeto:
+#### Example of `.env` File
 
 ```dotenv
-AUTH_TOKEN=seu-token-secreto
-HOSTNAME=seu-servidor
-REGISTRY_USERNAME=seu-usuario
-REGISTRY_PASSWORD=sua-senha
+# Authentication and Hostname
+AUTH_TOKEN=your-secret-token # to be defined for the connections with demo outreach orchestrator app
+HOSTNAME=http://outreach.yourdomain.com  # or the IP address of the orchestrator server
+
+# GitLab Credentials
+GITLAB_ACCESS_TOKEN=repo-access-token
+GITLAB_REPO_URL=https://gitlab.uspdigital.usp.br/eixosia/utils-public.git
+
+# Docker Registry Credentials
+REGISTRY_USERNAME=docker-registry-username
+REGISTRY_PASSWORD=docker-registry-password
+REGISTRY_HOST=registry.simple4decision.com
 ```
 
-**Importante**:
+### 2. Configuring the GitLab Repository
 
-- Substitua os valores pelas suas credenciais reais.
-- **Não** adicione este arquivo ao controle de versão.
-- Adicione `.env` ao `.gitignore`.
+In the GitLab repository where the notebooks are stored, you need to:
 
-### 5. Instalar Dependências
+1. Create a **Project Access Token** with `read_repository` and `write_repository` permissions.
+2. Configure the `.gitlab-ci.yml` file so GitLab can notify the Docker Orchestrator whenever a notebook is added, updated, or deleted.
 
-Instale as dependências do projeto:
+---
 
-```bash
-pnpm install
+## Running the Orchestrator
+
+### Steps to Run the Orchestrator
+
+1. **Create the Container**:
+
+   ```bash
+   pnpm install
+   pnpm run docker:start
+   ```
+
+2. **Check Logs**:
+   Check the logs to ensure the orchestrator has started correctly:
+
+   ```bash
+   docker logs outreach-orchestrator
+   ```
+
+3. **Test Connection**:
+   Access the orchestrator's API to confirm it is running:
+
+   ```bash
+   curl -X POST http://HOSTNAME:3000/projects \
+   -H "Content-Type: application/json" \
+   -H "Authorization: Bearer secret-token" \
+   -d '{"project": "project1", "action": "update"}'
+   ```
+
+---
+
+## API Endpoints
+
+The Docker Orchestrator provides a simple REST API to receive notifications of changes to the notebook repository. Authentication is done via a **Bearer Token**.
+
+### 1. `POST /projects`
+
+- **Description**: Notifies the orchestrator about a new or updated project.
+- **Request Body**:
+
+  ```json
+  {
+    "project": "project-name",
+    "action": "update"
+  }
+  ```
+
+- **Response**: Returns a 200 status code if the project was successfully processed.
+
+### 2. `DELETE /projects`
+
+- **Description**: Notifies the orchestrator about a project deletion.
+- **Request Body**:
+
+  ```json
+  {
+    "project": "project-name"
+  }
+  ```
+
+- **Response**: Returns a 200 status code if the project was successfully deleted.
+
+### Authentication
+
+All requests to the API must include the following authorization header:
+
+```
+Authorization: Bearer <AUTH_TOKEN>
 ```
 
-## Uso do Orquestrador
+---
 
-### Iniciar o Orquestrador
-
-Para construir a imagem Docker e iniciar o orquestrador, execute:
-
-```bash
-pnpm run docker:start
-```
-
-### Parar e Remover o Orquestrador
-
-Para parar e remover o contêiner do orquestrador:
-
-```bash
-pnpm run docker:stop
-pnpm run docker:rm
-```
-
-## Estrutura do Projeto
-
-```
-outreach/
-├── package.json
-├── pnpm-lock.yaml
-├── tsconfig.json
-├── orchestrator.env
-├── Dockerfile
-├── .gitignore
-└── src/
-    ├── config.ts
-    ├── index.ts
-    ├── orchestrator.ts
-    ├── gitManager.ts
-    └── dockerManager.ts
-```
-
-- **package.json**: Configurações do projeto e scripts.
-- **tsconfig.json**: Configurações do TypeScript.
-- **orchestrator.env**: Variáveis de ambiente sensíveis.
-- **Dockerfile**: Instruções para construir a imagem Docker do orquestrador.
-- **src/**: Código-fonte do orquestrador.
-
-## Configurações
-
-### src/config.ts
-
-Centraliza as configurações do projeto:
-
-```typescript
-export const config = {
-  git: {
-    repoUrl: 'git@gitlab.uspdigital.usp.br:eixosia/utils-public.git',
-    branch: 'main',
-  },
-  docker: {
-    registry: 'registry.simple4decision.com',
-    registryUsername: process.env.REGISTRY_USERNAME,
-    registryPassword: process.env.REGISTRY_PASSWORD,
-  },
-  paths: {
-    repoPath: '/app/repo',
-  },
-  server: {
-    hostname: process.env.HOSTNAME,
-  },
-  authToken: process.env.AUTH_TOKEN,
-};
-```
-
-**Nota**: Informações sensíveis são obtidas das variáveis de ambiente.
-
-## Scripts Disponíveis
-
-- **pnpm run start**: Inicia o aplicativo localmente.
-- **pnpm run build**: Compila o código TypeScript.
-- **pnpm run docker:build**: Constrói a imagem Docker do orquestrador.
-- **pnpm run docker:run**: Executa o contêiner Docker do orquestrador.
-- **pnpm run docker:stop**: Para o contêiner do orquestrador.
-- **pnpm run docker:rm**: Remove o contêiner do orquestrador.
-- **pnpm run docker:start**: Executa `docker:stop`, `docker:rm`, `docker:build` e `docker:run` em sequência.
-
-## Fluxo de Trabalho
-
-1. **Atualização no GitLab**: Um novo projeto é adicionado ou atualizado no repositório GitLab.
-2. **Notificação**: O pipeline CI/CD do GitLab notifica o orquestrador via API.
-3. **Orquestrador Processa o Projeto**:
-   - Clona ou atualiza o repositório.
-   - Gera o Dockerfile do projeto.
-   - Constrói a imagem Docker.
-   - Envia a imagem para o Docker Registry.
-   - Executa o contêiner do notebook.
-   - Atualiza o `URL.md` no GitLab com o link do notebook.
-4. **Acesso ao Notebook**: O usuário acessa o notebook via URL fornecida.
-
-## Considerações de Segurança
-
-- **Proteja o arquivo `.env`**:
-  - Não o adicione ao controle de versão.
-  - Defina permissões restritivas (`chmod 600`).
-- **Chave SSH Privada**:
-  - Mantenha a chave privada segura.
-  - Não compartilhe a chave com terceiros.
-- **Acesso ao Servidor**:
-  - Restrinja o acesso ao servidor onde o orquestrador está executando.
-- **Credenciais**:
-  - Use variáveis de ambiente para informações sensíveis.
-  - Evite colocar credenciais diretamente no código.
-
-## Contribuição
-
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.
-
-## Licença
-
-Este projeto está licenciado sob a [MIT License](LICENSE).
+If you need more assistance or have questions about how the Docker Orchestrator works, feel free to reach out!

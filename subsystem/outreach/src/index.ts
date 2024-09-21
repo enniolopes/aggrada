@@ -51,6 +51,6 @@ app.delete('/projects', async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log('Docker Orchestrator is running on port 3000');
+app.listen(3000, '0.0.0.0', () => {
+  console.log('Server is running on http://0.0.0.0:3000');
 });

@@ -10,7 +10,7 @@ export const config = {
     registryPassword: process.env.REGISTRY_PASSWORD,
   },
   paths: {
-    repoPath: '/app/repo',
+    repoPath: './app/repo',
   },
   server: {
     hostname: process.env.HOSTNAME,
