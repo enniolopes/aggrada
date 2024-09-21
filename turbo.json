@@ -22,7 +22,13 @@
     "REMOTE_USER_SERVER",
     "REMOTE_PASSWORD_SERVER",
     "JWT_SECRET",
-    "PORT"
+    "PORT",
+    "GITLAB_REPO_URL",
+    "GITLAB_ACCESS_TOKEN",
+    "REGISTRY_USERNAME",
+    "REGISTRY_PASSWORD",
+    "HOSTNAME",
+    "AUTH_TOKEN"
   ],
   "tasks": {
     "lint": {
