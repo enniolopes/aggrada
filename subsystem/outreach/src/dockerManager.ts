@@ -103,10 +103,10 @@ export const runContainer = async (projectName: string) => {
 
   console.log(`Starting the container for the project ${projectName}...`);
 
-  // Parar e remover o contêiner existente
+  // Remove container
   await removeContainer(projectName);
 
-  // Criar e iniciar o novo contêiner
+  // Create and init new container
   const container = await docker.createContainer({
     Image: imageTag,
     name: projectName,
