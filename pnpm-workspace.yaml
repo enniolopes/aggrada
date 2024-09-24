@@ -1,2 +1,3 @@
 packages:
   - subsystem/*
+  - subsystem/datacenter/*

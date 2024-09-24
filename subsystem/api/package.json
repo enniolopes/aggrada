@@ -1,13 +1,11 @@
 {
-  "name": "projeto-koa-postgres-api",
-  "version": "1.0.0",
-  "description": "",
-  "license": "ISC",
-  "author": "",
-  "main": "server.ts",
+  "name": "@simple4decision/api",
+  "version": "0.0.1",
+  "type": "module",
   "scripts": {
-    "dev": "tsx ./src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsup-node",
+    "build:api-image": "npm --prefix ../../ run build:api-image",
+    "dev": "tsx ./src/server.ts"
   },
   "dependencies": {
     "@koa/bodyparser": "^5.1.1",
@@ -46,6 +44,7 @@
     "@types/node": "^20.11.19",
     "@types/pg": "^8.11.6",
     "@types/ssh2-sftp-client": "^9.0.3",
+    "tsup": "^8.0.2",
     "typescript": "^5.5.4"
   },
   "keywords": [],

@@ -2,14 +2,12 @@
   "private": true,
   "name": "simple4decision",
   "version": "1.0.0",
-  "description": "",
-  "license": "ISC",
-  "author": "",
   "scripts": {
+    "build:api-image": "docker build -t registry.simple4decision.com/api -f ./subsystem/api/Dockerfile .",
     "preinstall": "npx only-allow pnpm",
     "lint": "lint-staged --diff main --quiet",
     "ls": "lerna ls",
-    "prepare": "husky",
+    "prepare": "husky || true",
     "syncpack:fix": "syncpack fix-mismatches",
     "syncpack:list": "syncpack list-mismatches"
   },
