@@ -1,3 +1,5 @@
 packages:
-  - subsystem/*
-  - subsystem/datacenter/*
+  - subsystem/app/*
+  - subsystem/api/*
+  - subsystem/postgresdb/*
+  - subsystem/server/api/*
