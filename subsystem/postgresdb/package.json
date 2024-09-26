@@ -6,22 +6,17 @@
   "type": "module",
   "exports": "./src/index.ts",
   "scripts": {
-    "db-docker-compose": "sudo docker compose -f docker-compose.yml up -d",
-    "erd": "tsx scripts/erd.ts",
-    "sync": "tsx scripts/sync.ts"
+    "erd": "ttoss-postgresdb erd",
+    "seed": "tsx scripts/seedDatabase.ts",
+    "sync": "ttoss-postgresdb sync"
   },
   "dependencies": {
-    "pg": "^8.12.0",
-    "sequelize": "^6.37.0",
-    "sequelize-typescript": "^2.1.6"
+    "@ttoss/postgresdb": "^0.1.2"
   },
   "devDependencies": {
     "@ttoss/config": "^1.32.10",
-    "@types/node": "20.16.0",
-    "@types/validator": "^13.11.9",
+    "@ttoss/postgresdb-cli": "^0.1.2",
     "dotenv": "^16.4.5",
-    "sequelize-cli": "^6.6.2",
-    "sequelize-erd": "^1.3.1",
     "tsx": "^4.19.1",
     "typescript": "^5.6.2"
   }
