@@ -49,8 +49,8 @@
 <polygon fill="none" stroke="#000000" points="470.4863,-503.446 470.4863,-525.446 603.4863,-525.446 603.4863,-503.446 470.4863,-503.446"/>
 <text text-anchor="start" x="475.4863" y="-511.446" font-family="Times,serif" font-size="10.00" fill="#000000">data: JSON</text>
 <polygon fill="none" stroke="#000000" points="470.4863,-481.446 470.4863,-503.446 603.4863,-503.446 603.4863,-481.446 470.4863,-481.446"/>
-<text text-anchor="start" x="475.4863" y="-490.446" font-family="Times,serif" font-style="italic" text-decoration="underline" font-size="10.00" fill="#000000">log_id</text>
-<text text-anchor="start" x="501.0443" y="-490.446" font-family="Times,serif" font-size="10.00" fill="#000000">: NUMBER</text>
+<text text-anchor="start" x="475.4863" y="-490.446" font-family="Times,serif" font-style="italic" text-decoration="underline" font-size="10.00" fill="#000000">coreLog_id</text>
+<text text-anchor="start" x="521.5813" y="-490.446" font-family="Times,serif" font-size="10.00" fill="#000000">: NUMBER</text>
 <polygon fill="none" stroke="#000000" points="470.4863,-459.446 470.4863,-481.446 603.4863,-481.446 603.4863,-459.446 470.4863,-459.446"/>
 <text text-anchor="start" x="475.4863" y="-468.446" font-family="Times,serif" font-style="italic" text-decoration="underline" font-size="10.00" fill="#000000">core_file_id</text>
 <text text-anchor="start" x="523.7983" y="-468.446" font-family="Times,serif" font-size="10.00" fill="#000000">: NUMBER</text>
@@ -118,37 +118,37 @@
 <path fill="none" stroke="#000000" stroke-width=".75" d="M609.4247,-545.5912C643.9632,-544.7129 685.1702,-543.665 719.9698,-542.7801"/>
 <polygon fill="#000000" stroke="#000000" stroke-width=".75" points="609.0543,-545.6005 602.9875,-543.054 606.0552,-545.6768 603.0562,-545.7531 603.0562,-545.7531 603.0562,-545.7531 606.0552,-545.6768 603.1249,-548.4523 609.0543,-545.6005 609.0543,-545.6005"/>
 </g>
-<!-- Log -->
-<g id="node8" class="node">
-<title>Log</title>
-<polygon fill="#add8e6" stroke="transparent" points="286.7153,-467.6782 286.7153,-489.6782 392.7153,-489.6782 392.7153,-467.6782 286.7153,-467.6782"/>
-<polygon fill="none" stroke="#000000" points="286.7153,-467.6782 286.7153,-489.6782 392.7153,-489.6782 392.7153,-467.6782 286.7153,-467.6782"/>
-<text text-anchor="start" x="331.6608" y="-476.6782" font-family="Times,serif" font-weight="bold" font-size="10.00" fill="#000000">Log</text>
-<polygon fill="none" stroke="#000000" points="286.7153,-445.6782 286.7153,-467.6782 392.7153,-467.6782 392.7153,-445.6782 286.7153,-445.6782"/>
-<text text-anchor="start" x="291.7153" y="-454.6782" font-family="Times,serif" text-decoration="underline" font-size="10.00" fill="#000000">id</text>
-<text text-anchor="start" x="299.4943" y="-454.6782" font-family="Times,serif" font-size="10.00" fill="#000000">: NUMBER</text>
-<polygon fill="none" stroke="#000000" points="286.7153,-423.6782 286.7153,-445.6782 392.7153,-445.6782 392.7153,-423.6782 286.7153,-423.6782"/>
-<text text-anchor="start" x="291.7153" y="-431.6782" font-family="Times,serif" font-size="10.00" fill="#000000">level: ENUM</text>
-<polygon fill="none" stroke="#000000" points="286.7153,-401.6782 286.7153,-423.6782 392.7153,-423.6782 392.7153,-401.6782 286.7153,-401.6782"/>
-<text text-anchor="start" x="291.7153" y="-409.6782" font-family="Times,serif" font-size="10.00" fill="#000000">message: STRING</text>
-<polygon fill="none" stroke="#000000" points="286.7153,-379.6782 286.7153,-401.6782 392.7153,-401.6782 392.7153,-379.6782 286.7153,-379.6782"/>
-<text text-anchor="start" x="291.7153" y="-387.6782" font-family="Times,serif" font-size="10.00" fill="#000000">source: STRING</text>
-<polygon fill="none" stroke="#000000" points="286.7153,-357.6782 286.7153,-379.6782 392.7153,-379.6782 392.7153,-357.6782 286.7153,-357.6782"/>
-<text text-anchor="start" x="291.7153" y="-365.6782" font-family="Times,serif" font-size="10.00" fill="#000000">context: JSON</text>
-<polygon fill="none" stroke="#000000" points="286.7153,-335.6782 286.7153,-357.6782 392.7153,-357.6782 392.7153,-335.6782 286.7153,-335.6782"/>
-<text text-anchor="start" x="291.2633" y="-344.6782" font-family="Times,serif" font-style="italic" text-decoration="underline" font-size="10.00" fill="#000000">core_user_email</text>
-<text text-anchor="start" x="357.3423" y="-344.6782" font-family="Times,serif" font-size="10.00" fill="#000000">: TEXT</text>
-<polygon fill="none" stroke="#000000" points="286.7153,-313.6782 286.7153,-335.6782 392.7153,-335.6782 392.7153,-313.6782 286.7153,-313.6782"/>
-<text text-anchor="start" x="291.7153" y="-321.6782" font-family="Times,serif" font-size="10.00" fill="#000000">log_id: NUMBER</text>
-<polygon fill="none" stroke="#000000" points="286.7153,-291.6782 286.7153,-313.6782 392.7153,-313.6782 392.7153,-291.6782 286.7153,-291.6782"/>
-<text text-anchor="start" x="291.7153" y="-299.6782" font-family="Times,serif" font-size="10.00" fill="#000000">createdAt: DATE</text>
-<polygon fill="none" stroke="#000000" points="286.7153,-269.6782 286.7153,-291.6782 392.7153,-291.6782 392.7153,-269.6782 286.7153,-269.6782"/>
-<text text-anchor="start" x="291.7153" y="-277.6782" font-family="Times,serif" font-size="10.00" fill="#000000">updatedAt: DATE</text>
+<!-- CoreLog -->
+<g id="node7" class="node">
+<title>CoreLog</title>
+<polygon fill="#add8e6" stroke="transparent" points="271.7153,-467.6782 271.7153,-489.6782 407.7153,-489.6782 407.7153,-467.6782 271.7153,-467.6782"/>
+<polygon fill="none" stroke="#000000" points="271.7153,-467.6782 271.7153,-489.6782 407.7153,-489.6782 407.7153,-467.6782 271.7153,-467.6782"/>
+<text text-anchor="start" x="321.9423" y="-476.6782" font-family="Times,serif" font-weight="bold" font-size="10.00" fill="#000000">CoreLog</text>
+<polygon fill="none" stroke="#000000" points="271.7153,-445.6782 271.7153,-467.6782 407.7153,-467.6782 407.7153,-445.6782 271.7153,-445.6782"/>
+<text text-anchor="start" x="276.7153" y="-454.6782" font-family="Times,serif" text-decoration="underline" font-size="10.00" fill="#000000">id</text>
+<text text-anchor="start" x="284.4943" y="-454.6782" font-family="Times,serif" font-size="10.00" fill="#000000">: NUMBER</text>
+<polygon fill="none" stroke="#000000" points="271.7153,-423.6782 271.7153,-445.6782 407.7153,-445.6782 407.7153,-423.6782 271.7153,-423.6782"/>
+<text text-anchor="start" x="276.7153" y="-431.6782" font-family="Times,serif" font-size="10.00" fill="#000000">level: ENUM</text>
+<polygon fill="none" stroke="#000000" points="271.7153,-401.6782 271.7153,-423.6782 407.7153,-423.6782 407.7153,-401.6782 271.7153,-401.6782"/>
+<text text-anchor="start" x="276.7153" y="-409.6782" font-family="Times,serif" font-size="10.00" fill="#000000">message: STRING</text>
+<polygon fill="none" stroke="#000000" points="271.7153,-379.6782 271.7153,-401.6782 407.7153,-401.6782 407.7153,-379.6782 271.7153,-379.6782"/>
+<text text-anchor="start" x="276.7153" y="-387.6782" font-family="Times,serif" font-size="10.00" fill="#000000">source: STRING</text>
+<polygon fill="none" stroke="#000000" points="271.7153,-357.6782 271.7153,-379.6782 407.7153,-379.6782 407.7153,-357.6782 271.7153,-357.6782"/>
+<text text-anchor="start" x="276.7153" y="-365.6782" font-family="Times,serif" font-size="10.00" fill="#000000">context: JSON</text>
+<polygon fill="none" stroke="#000000" points="271.7153,-335.6782 271.7153,-357.6782 407.7153,-357.6782 407.7153,-335.6782 271.7153,-335.6782"/>
+<text text-anchor="start" x="276.7153" y="-344.6782" font-family="Times,serif" font-style="italic" text-decoration="underline" font-size="10.00" fill="#000000">core_user_email</text>
+<text text-anchor="start" x="342.7943" y="-344.6782" font-family="Times,serif" font-size="10.00" fill="#000000">: TEXT</text>
+<polygon fill="none" stroke="#000000" points="271.7153,-313.6782 271.7153,-335.6782 407.7153,-335.6782 407.7153,-313.6782 271.7153,-313.6782"/>
+<text text-anchor="start" x="276.5393" y="-321.6782" font-family="Times,serif" font-size="10.00" fill="#000000">related_coreLog_id: NUMBER</text>
+<polygon fill="none" stroke="#000000" points="271.7153,-291.6782 271.7153,-313.6782 407.7153,-313.6782 407.7153,-291.6782 271.7153,-291.6782"/>
+<text text-anchor="start" x="276.7153" y="-299.6782" font-family="Times,serif" font-size="10.00" fill="#000000">createdAt: DATE</text>
+<polygon fill="none" stroke="#000000" points="271.7153,-269.6782 271.7153,-291.6782 407.7153,-291.6782 407.7153,-269.6782 271.7153,-269.6782"/>
+<text text-anchor="start" x="276.7153" y="-277.6782" font-family="Times,serif" font-size="10.00" fill="#000000">updatedAt: DATE</text>
 </g>
-<!-- AggRaDaObservation&#45;&gt;Log -->
+<!-- AggRaDaObservation&#45;&gt;CoreLog -->
 <g id="edge3" class="edge">
-<title>AggRaDaObservation&#45;&gt;Log</title>
-<path fill="none" stroke="#000000" stroke-width=".75" d="M465.1306,-486.6078C441.2784,-466.2713 415.1283,-443.9756 392.9076,-425.0302"/>
+<title>AggRaDaObservation&#45;&gt;CoreLog</title>
+<path fill="none" stroke="#000000" stroke-width=".75" d="M465.1571,-486.6304C446.4989,-470.7224 426.4331,-453.6141 407.9409,-437.8476"/>
 <polygon fill="#000000" stroke="#000000" stroke-width=".75" points="465.3028,-486.7546 468.1168,-492.7021 467.5857,-488.701 469.8686,-490.6475 469.8686,-490.6475 469.8686,-490.6475 467.5857,-488.701 471.6204,-488.5928 465.3028,-486.7546 465.3028,-486.7546"/>
 </g>
 <!-- CoreFileCollection -->
@@ -207,7 +207,7 @@
 <polygon fill="#000000" stroke="#000000" stroke-width=".75" points="767.4025,-136.7753 765.5586,-130.4594 765.454,-134.4942 763.5055,-132.213 763.5055,-132.213 763.5055,-132.213 765.454,-134.4942 761.4525,-133.9667 767.4025,-136.7753 767.4025,-136.7753"/>
 </g>
 <!-- CoreUser -->
-<g id="node7" class="node">
+<g id="node8" class="node">
 <title>CoreUser</title>
 <polygon fill="#add8e6" stroke="transparent" points="376.7808,-160.828 376.7808,-182.828 488.7808,-182.828 488.7808,-160.828 376.7808,-160.828"/>
 <polygon fill="none" stroke="#000000" points="376.7808,-160.828 376.7808,-182.828 488.7808,-182.828 488.7808,-160.828 376.7808,-160.828"/>
@@ -230,9 +230,9 @@
 <path fill="none" stroke="#000000" stroke-width=".75" d="M625.5354,-81.0932C581.6225,-89.2342 528.5281,-99.0774 489.1913,-106.37"/>
 <polygon fill="#000000" stroke="#000000" stroke-width=".75" points="625.769,-81.05 632.1606,-82.611 628.7187,-80.5031 631.6684,-79.9562 631.6684,-79.9562 631.6684,-79.9562 628.7187,-80.5031 631.1762,-77.3014 625.769,-81.05 625.769,-81.05"/>
 </g>
-<!-- CoreUser&#45;&gt;Log -->
+<!-- CoreUser&#45;&gt;CoreLog -->
 <g id="edge8" class="edge">
-<title>CoreUser&#45;&gt;Log</title>
+<title>CoreUser&#45;&gt;CoreLog</title>
 <path fill="none" stroke="#000000" stroke-width=".75" d="M409.2965,-183.1562C400.6246,-207.6486 390.524,-236.1764 380.7513,-263.7777"/>
 <polygon fill="#000000" stroke="#000000" stroke-width=".75" points="380.6742,-263.9958 376.1264,-268.7506 379.6729,-266.8238 378.6716,-269.6517 378.6716,-269.6517 378.6716,-269.6517 379.6729,-266.8238 381.2168,-270.5529 380.6742,-263.9958 380.6742,-263.9958"/>
 </g>

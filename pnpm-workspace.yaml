@@ -1,5 +1,5 @@
+# Only add packages that are Node.js projects
 packages:
-  - subsystem/app/*
-  - subsystem/api/*
-  - subsystem/postgresdb/*
-  - subsystem/server/api/*
+  - subsystem/app
+  - subsystem/api
+  - subsystem/postgresdb

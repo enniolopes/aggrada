@@ -2,36 +2,28 @@
 
 ## About
 
-- We use [Sequelize](https://sequelize.org/docs/v6/) for PostgresSQL
-
+- We use [@ttoss/postgresdb](https://ttoss.dev/docs/modules/packages/postgresdb/) to manage the database using code-first approach. Check [ttoss guidelines](https://ttoss.dev/docs/engineering/guidelines/postgresdb) for more information.
 - View the [database structure documentation](./DATABASE.md)
 
-## Install New DataBase with Docker
+## Development
 
-1. Create a .env file at [postgresdb root folder](./) with the variables (substitute \* with your values):
+To create a database for development, you can use the following steps:
 
-```yaml
-DATABASE_HOST=*
-DATABASE_PORT=*
-DATABASE_NAME=*
-DATABASE_USERNAME=*
-DATABASE_PASSWORD=*
-```
+1. Create a `.env` file at the root of the package with the following variables (change the values as needed):
 
-2. Install all dependencies at CLI:
+   ```yaml
+   DB_NAME=simple4decisiondb
+   DB_USERNAME=postgres
+   DB_PASSWORD=mysecretpassword
+   DB_HOST=localhost
+   ```
 
-```bash
-pnpm install
-```
+1. Run `docker compose -f docker-compose.dev.yml up -d` to start the database.
 
-3. Create Docker container at CLI (the docker needs to be already installed):
+1. Run `pnpm run sync` to create the database and tables.
 
-```bash
-pnpm run db-docker-compose
-```
+1. Check if the database and tables were created successfully. Run `docker exec -it simple4decision-db psql -U postgres -d simple4decisiondb` to connect to the database and then run `\dt` to list the tables. If the tables are listed, the database was created successfully.
 
-4. Create Simple4Decision Database and Tables:
+1. Run `pnpm run seed` to seed the database with sample data.
 
-```bash
-pnpm run sync
-```
+1. After you finish development, run `docker compose -f docker-compose.dev.yml down` to stop the database.

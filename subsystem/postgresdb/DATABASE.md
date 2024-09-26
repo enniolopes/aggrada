@@ -22,7 +22,7 @@ The detailed structure of the entities can be found in the [models directory](./
 
 - **ERD**
 
-![Database's ERD](./public/erd.svg)
+![Database's ERD](./erd.svg)
 
 - **Normalization**
 
