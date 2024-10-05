@@ -1,4 +1,4 @@
-import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, HasMany, Model, Table } from '@ttoss/postgresdb';
 import { CoreFile } from './CoreFile';
 import { CoreFileCollectionUser } from './CoreFileCollectionUser';
 
@@ -13,23 +13,31 @@ export class CoreFileCollection extends Model {
   @Column({
     type: DataType.ENUM('PUBLIC', 'PRIVATE'),
     allowNull: false,
+    defaultValue: 'PRIVATE',
   })
   privacy: 'PUBLIC' | 'PRIVATE';
 
   @Column({
     type: DataType.BOOLEAN,
+    defaultValue: true,
   })
-  isRaw!: boolean;
+  is_raw: boolean;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    defaultValue: false,
+  })
+  is_Spatial: boolean;
 
   @Column({
     type: DataType.TEXT,
   })
-  description!: string;
+  description?: string;
 
   @Column({
     type: DataType.ARRAY(DataType.STRING),
   })
-  tags!: string[];
+  tags?: string[];
 
   /**
    * References
@@ -37,10 +45,10 @@ export class CoreFileCollection extends Model {
   @HasMany(() => {
     return CoreFile;
   })
-  coreFile!: CoreFile[];
+  core_file!: CoreFile[];
 
   @HasMany(() => {
     return CoreFileCollectionUser;
   })
-  coreFileCollectionUser!: CoreFileCollectionUser[];
+  core_file_collection_user!: CoreFileCollectionUser[];
 }

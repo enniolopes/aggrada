@@ -5,7 +5,7 @@ import {
   ForeignKey,
   Model,
   Table,
-} from 'sequelize-typescript';
+} from '@ttoss/postgresdb';
 import { CoreFileCollection } from './CoreFileCollection';
 import { CoreUser } from './CoreUser';
 
@@ -15,16 +15,16 @@ export class CoreFileCollectionUser extends Model {
     return CoreUser;
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.INTEGER,
     allowNull: false,
     primaryKey: true,
   })
-  core_user_email: string;
+  core_user_id: number;
 
   @BelongsTo(() => {
     return CoreUser;
   })
-  coreUser!: CoreUser;
+  core_user?: CoreUser;
 
   @ForeignKey(() => {
     return CoreFileCollection;
@@ -39,7 +39,7 @@ export class CoreFileCollectionUser extends Model {
   @BelongsTo(() => {
     return CoreFileCollection;
   })
-  coreFileCollection!: CoreFileCollection;
+  core_file_collection?: CoreFileCollection;
 
   @Column({
     type: DataType.ENUM('READ', 'ADMIN', 'OWNER'),

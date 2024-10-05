@@ -20,3 +20,4 @@ def get_city_map(input: CityMapInput):
         return response.json()
     else:
         raise Exception(f"Erro ao acessar a API do IBGE: {response.status_code}")
+

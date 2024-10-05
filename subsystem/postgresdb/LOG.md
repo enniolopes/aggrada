@@ -4,12 +4,12 @@
 
 Focus on the absolute essentials needed to trace, understand, and manage logs across various systems:
 
-- `level`: Specifies the severity.
+- `type`: Specifies the severity.
 - `message`: A clear, human-readable description of the event.
 
-#### 1.1. Core Log Levels (ENUMs)
+#### 1.1. Core Log Types (ENUMs)
 
-Based on extensive research, the following ENUM values for log levels are recommended as they cover a broad range of use cases and are commonly accepted in industry and academic standards:
+Based on extensive research, the following ENUM values for log types are recommended as they cover a broad range of use cases and are commonly accepted in industry and academic standards:
 
 **ERROR**: Indicates a significant issue that requires immediate attention. This level is used when the application encounters a serious issue, such as a failure that impacts the functionality of the system.
 

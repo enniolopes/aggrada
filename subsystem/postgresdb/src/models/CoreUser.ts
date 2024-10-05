@@ -1,4 +1,4 @@
-import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, HasMany, Model, Table } from '@ttoss/postgresdb';
 import { CoreFileCollectionUser } from './CoreFileCollectionUser';
 import { CoreLog } from './CoreLog';
 
@@ -8,7 +8,6 @@ export class CoreUser extends Model {
     type: DataType.STRING,
     allowNull: false,
     unique: true,
-    primaryKey: true,
   })
   email: string;
 
@@ -18,21 +17,16 @@ export class CoreUser extends Model {
   })
   password_hash: string;
 
-  @Column({
-    type: DataType.STRING,
-  })
-  name!: string;
-
   /**
    * References
    */
   @HasMany(() => {
     return CoreLog;
   })
-  coreLog!: CoreLog[];
+  core_log?: CoreLog[];
 
   @HasMany(() => {
     return CoreFileCollectionUser;
   })
-  coreFileCollectionUser!: CoreFileCollectionUser[];
+  core_file_collection_user?: CoreFileCollectionUser[];
 }
