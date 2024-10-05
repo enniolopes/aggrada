@@ -3,3 +3,4 @@ packages:
   - subsystem/app
   - subsystem/api
   - subsystem/postgresdb
+  - subsystem/aggrada-core

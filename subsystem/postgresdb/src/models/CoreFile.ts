@@ -1,4 +1,4 @@
-import { AggRaDaObservation } from './AggRaDaObservation';
+import { AggradaObservation } from './AggradaObservation';
 import {
   BelongsTo,
   Column,
@@ -7,7 +7,7 @@ import {
   HasMany,
   Model,
   Table,
-} from 'sequelize-typescript';
+} from '@ttoss/postgresdb';
 import { CoreFileCollection } from './CoreFileCollection';
 
 @Table
@@ -49,18 +49,18 @@ export class CoreFile extends Model {
     type: DataType.INTEGER,
     // allowNull: false,
   })
-  core_file_collection_id!: number;
+  core_file_collection_id: number;
 
   @BelongsTo(() => {
     return CoreFileCollection;
   })
-  coreFileCollection!: CoreFileCollection;
+  core_file_collection: CoreFileCollection;
 
   /**
    * References
    */
   @HasMany(() => {
-    return AggRaDaObservation;
+    return AggradaObservation;
   })
-  aggRaDaObservation!: AggRaDaObservation[];
+  aggrada_observation: AggradaObservation[];
 }

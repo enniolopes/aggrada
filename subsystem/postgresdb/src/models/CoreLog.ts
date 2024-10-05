@@ -1,10 +1,4 @@
-import {
-  Column,
-  DataType,
-  ForeignKey,
-  Model,
-  Table,
-} from 'sequelize-typescript';
+import { Column, DataType, ForeignKey, Model, Table } from '@ttoss/postgresdb';
 import { CoreUser } from './CoreUser';
 
 @Table
@@ -13,7 +7,7 @@ export class CoreLog extends Model {
     type: DataType.ENUM('INFO', 'WARN', 'ERROR', 'DEBUG', 'TRACE'),
     allowNull: false,
   })
-  level: 'INFO' | 'WARN' | 'ERROR' | 'DEBUG' | 'TRACE';
+  type: 'INFO' | 'WARN' | 'ERROR' | 'DEBUG' | 'TRACE';
 
   @Column({
     type: DataType.STRING,
@@ -24,20 +18,20 @@ export class CoreLog extends Model {
   @Column({
     type: DataType.STRING,
   })
-  source!: string;
+  source: string;
 
   @Column({
     type: DataType.JSONB,
   })
-  context!: object;
+  context: object;
 
   @ForeignKey(() => {
     return CoreUser;
   })
   @Column({
-    type: DataType.TEXT,
+    type: DataType.INTEGER,
   })
-  core_user_email!: string;
+  core_user_id: number;
 
   @ForeignKey(() => {
     return CoreLog;
@@ -45,5 +39,5 @@ export class CoreLog extends Model {
   @Column({
     type: DataType.INTEGER,
   })
-  related_coreLog_id!: number;
+  related_core_log_id: number;
 }
