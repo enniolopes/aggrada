@@ -5,4 +5,6 @@ export default defineConfig({
   entry: ['src/server.ts'],
   format: 'esm',
   treeshake: true,
+  target: 'esnext',
+  noExternal: ['@subsystem/postgresdb'],
 });

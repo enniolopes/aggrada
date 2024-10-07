@@ -5,5 +5,5 @@
       "src/*": ["./src/*"]
     }
   },
-  "include": ["../../datacenter/postgresdb", "src"]
+  "include": ["../postgresdb", "src"]
 }
