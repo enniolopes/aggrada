@@ -1,1 +1,1 @@
-export { db } from './db';
+export * as models from './models';
