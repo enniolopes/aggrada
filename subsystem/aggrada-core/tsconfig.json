@@ -1,8 +1,6 @@
 {
   "extends": "@ttoss/config/tsconfig.json",
   "compilerOptions": {
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "strictPropertyInitialization": false
   }
 }

@@ -37,7 +37,13 @@ export class AggradaObservation extends Model {
     type: DataType.RANGE(DataType.DATE),
     allowNull: false,
   })
-  temporal_range: Date[];
+  temporal_range_tz: Date[];
+
+  @Column({
+    type: DataType.RANGE(DataType.DATEONLY),
+    allowNull: false,
+  })
+  temporal_range: string[];
 
   @Column({
     type: DataType.JSONB,

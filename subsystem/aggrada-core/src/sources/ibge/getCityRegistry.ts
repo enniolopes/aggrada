@@ -75,17 +75,28 @@ const transformCityMetadata = (data: CityResponseData): CityMetadata => {
   };
 };
 
-export const getCitiesMetadata = async (): Promise<CityMetadata[]> => {
-  try {
-    const response = await axios.get<CityResponseData[]>(
-      IBGE_API_LOCALIDADES_URL
-    );
-    const responseData = response.data;
-    const transformedData: CityMetadata[] = responseData.map(
-      transformCityMetadata
-    );
-    return transformedData;
-  } catch (err) {
-    throw new Error(`Failed to fetch cities metadata from IBGE API.\n${err}`);
+export const getIbgeCityRegistry = async ({
+  ibgeCode,
+}: {
+  ibgeCode: string;
+}): Promise<CityMetadata> => {
+  const response = await axios.get<CityResponseData>(
+    `IBGE_API_LOCALIDADES_URL/${ibgeCode}`
+  );
+  if (response?.data?.id && response?.data?.nome) {
+    return transformCityMetadata(response.data);
   }
+
+  throw new Error(`Error: data not founded for IBGE city code ${ibgeCode}`);
+};
+
+export const getIbgeAllCitiesRegistry = async (): Promise<CityMetadata[]> => {
+  const response = await axios.get<CityResponseData[]>(
+    IBGE_API_LOCALIDADES_URL
+  );
+  const responseData = response.data;
+  const transformedData: CityMetadata[] = responseData.map(
+    transformCityMetadata
+  );
+  return transformedData;
 };
