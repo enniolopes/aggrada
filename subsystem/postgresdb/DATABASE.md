@@ -16,6 +16,8 @@ The database's structure was designed for research centers to manage datasets an
 
 - **File Collection vs. File**: The concept of a File Collection is retained as a representation of a dataset comprising one or more related files. This structure is particularly beneficial for managing geospatial data (e.g., polygons and points stored in separate files) or time-series data distributed across multiple regions or time periods. A File Collection facilitates efficient versioning, metadata management, and supports operations that span across multiple files, enabling greater flexibility and scalability in data handling.
 
+- **Spatial Data**: We save the original spatial data but we standarize the The spatial data uses the SRID (Spatial Reference System Identifier) 4326, which specifies the **WGS 84** reference system.
+
 ## Structure
 
 The detailed structure of the entities can be found in the [models directory](./src/models/index.ts).

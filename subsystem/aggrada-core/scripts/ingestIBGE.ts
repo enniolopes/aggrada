@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { db } from '@simple4decision/postgresdb';
-import { getCitiesMetadata, getCityMap } from '../ibge';
+import { getCitiesMetadata, getCityMap } from '../src/sources/ibge';
 import pLimit from 'p-limit';
 // import { ModelColumns } from '@ttoss/postgresdb';
 
