@@ -45,10 +45,10 @@ export class CoreFileCollection extends Model {
   @HasMany(() => {
     return CoreFile;
   })
-  core_file!: CoreFile[];
+  core_files!: CoreFile[];
 
   @HasMany(() => {
     return CoreFileCollectionUser;
   })
-  core_file_collection_user!: CoreFileCollectionUser[];
+  core_file_collection_users!: CoreFileCollectionUser[];
 }

@@ -1,6 +1,7 @@
 # Locals
 .local
 .venv
+data
 
 # Logs
 logs

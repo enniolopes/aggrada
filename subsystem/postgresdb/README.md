@@ -27,3 +27,9 @@ To create a database for development, you can use the following steps:
 1. Run `pnpm run seed` to seed the database with sample data.
 
 1. After you finish development, run `docker compose -f docker-compose.dev.yml down` to stop the database.
+
+## Operations
+
+### Spatial Entity
+
+1. Admin Levels: define the admin_levels at [adminLevelMap.ts](subsystem/postgresdb/src/transformers/adminLevelMap.ts)

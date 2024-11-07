@@ -23,10 +23,10 @@ export class CoreUser extends Model {
   @HasMany(() => {
     return CoreLog;
   })
-  core_log?: CoreLog[];
+  core_logs?: CoreLog[];
 
   @HasMany(() => {
     return CoreFileCollectionUser;
   })
-  core_file_collection_user?: CoreFileCollectionUser[];
+  core_file_collection_users?: CoreFileCollectionUser[];
 }

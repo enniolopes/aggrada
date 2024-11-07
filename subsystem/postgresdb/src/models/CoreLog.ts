@@ -1,13 +1,15 @@
 import { Column, DataType, ForeignKey, Model, Table } from '@ttoss/postgresdb';
 import { CoreUser } from './CoreUser';
 
+const logLevels = ['INFO', 'WARN', 'ERROR', 'DEBUG', 'TRACE'] as const;
+
 @Table
 export class CoreLog extends Model {
   @Column({
-    type: DataType.ENUM('INFO', 'WARN', 'ERROR', 'DEBUG', 'TRACE'),
+    type: DataType.ENUM(...logLevels),
     allowNull: false,
   })
-  type: 'INFO' | 'WARN' | 'ERROR' | 'DEBUG' | 'TRACE';
+  type: (typeof logLevels)[number];
 
   @Column({
     type: DataType.STRING,
@@ -31,7 +33,7 @@ export class CoreLog extends Model {
   @Column({
     type: DataType.INTEGER,
   })
-  core_user_id: number;
+  core_users_id: number;
 
   @ForeignKey(() => {
     return CoreLog;
@@ -39,5 +41,5 @@ export class CoreLog extends Model {
   @Column({
     type: DataType.INTEGER,
   })
-  related_core_log_id: number;
+  related_core_logs_id: number;
 }

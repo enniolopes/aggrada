@@ -9,6 +9,8 @@ import {
 import { CoreFileCollection } from './CoreFileCollection';
 import { CoreUser } from './CoreUser';
 
+const permissionLevels = ['READ', 'ADMIN', 'OWNER'] as const;
+
 @Table
 export class CoreFileCollectionUser extends Model {
   @ForeignKey(() => {
@@ -19,12 +21,12 @@ export class CoreFileCollectionUser extends Model {
     allowNull: false,
     primaryKey: true,
   })
-  core_user_id: number;
+  core_users_id: number;
 
   @BelongsTo(() => {
     return CoreUser;
   })
-  core_user?: CoreUser;
+  core_users?: CoreUser;
 
   @ForeignKey(() => {
     return CoreFileCollection;
@@ -34,16 +36,16 @@ export class CoreFileCollectionUser extends Model {
     allowNull: false,
     primaryKey: true,
   })
-  core_file_collection_id: number;
+  core_file_collections_id: number;
 
   @BelongsTo(() => {
     return CoreFileCollection;
   })
-  core_file_collection?: CoreFileCollection;
+  core_file_collections?: CoreFileCollection;
 
   @Column({
-    type: DataType.ENUM('READ', 'ADMIN', 'OWNER'),
+    type: DataType.ENUM(...permissionLevels),
     allowNull: false,
   })
-  permission_level: 'READ' | 'ADMIN' | 'OWNER';
+  permission_level: (typeof permissionLevels)[number];
 }
