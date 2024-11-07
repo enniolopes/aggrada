@@ -1,6 +1,3 @@
 {
-  "extends": "@ttoss/config/tsconfig.json",
-  "compilerOptions": {
-    "strictPropertyInitialization": false
-  }
+  "extends": "@ttoss/config/tsconfig.json"
 }

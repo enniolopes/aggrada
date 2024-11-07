@@ -49,12 +49,12 @@ export class CoreFile extends Model {
     type: DataType.INTEGER,
     // allowNull: false,
   })
-  core_file_collection_id: number;
+  core_file_collections_id: number;
 
   @BelongsTo(() => {
     return CoreFileCollection;
   })
-  core_file_collection: CoreFileCollection;
+  core_file_collections: CoreFileCollection;
 
   /**
    * References
@@ -62,5 +62,5 @@ export class CoreFile extends Model {
   @HasMany(() => {
     return AggradaObservation;
   })
-  aggrada_observation: AggradaObservation[];
+  aggrada_observations: AggradaObservation[];
 }

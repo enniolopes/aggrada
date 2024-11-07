@@ -12,9 +12,14 @@ import { CoreFile } from './CoreFile';
 @Table({
   indexes: [
     {
+      fields: ['temporal_range_tz'],
+      using: 'GIST',
+      name: 'aggrada_observations_temporal_range_tz_gist',
+    },
+    {
       fields: ['temporal_range'],
       using: 'GIST',
-      name: 'aggrada_observation_temporal_gist',
+      name: 'aggrada_observations_temporal_range_gist',
     },
   ],
 })
@@ -26,12 +31,12 @@ export class AggradaObservation extends Model {
     type: DataType.INTEGER,
     allowNull: false, // Every observation must be tied to spatial data
   })
-  aggrada_spatial_id: number;
+  aggrada_spatials_id: number;
 
   @BelongsTo(() => {
     return AggradaSpatial;
   })
-  aggrada_spatial: AggradaSpatial;
+  aggrada_spatials: AggradaSpatial;
 
   @Column({
     type: DataType.RANGE(DataType.DATE),
@@ -40,10 +45,10 @@ export class AggradaObservation extends Model {
   temporal_range_tz: Date[];
 
   @Column({
-    type: DataType.RANGE(DataType.DATEONLY),
+    type: DataType.RANGE(DataType.DATE),
     allowNull: false,
   })
-  temporal_range: string[];
+  temporal_range: Date[];
 
   @Column({
     type: DataType.JSONB,
@@ -58,10 +63,10 @@ export class AggradaObservation extends Model {
     type: DataType.INTEGER,
     // allowNull: false,
   })
-  core_file_id: number;
+  core_files_id: number;
 
   // @BelongsTo(() => {
   //   return CoreFile;
   // })
-  // core_file: CoreFile;
+  // core_files: CoreFile;
 }

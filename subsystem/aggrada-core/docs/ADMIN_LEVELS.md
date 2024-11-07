@@ -22,6 +22,7 @@ In OpenStreetMap, the `admin_level` values range from 1 to 12, where each level 
 | **10**          | Neighborhood, subdistrict                       | Local neighborhoods, community districts                |
 | **11**          | Minor areas or block divisions                  | Residential blocks, local sectors                       |
 | **12**          | Street or block-level areas                     | Individual streets, specific residential blocks         |
+| **13**          | Locations as lat long or address                | Address with number or an specific point                |
 
 ## Why OpenStreetMap’s Admin Levels?
 

@@ -9,85 +9,70 @@ import {
 } from '@ttoss/postgresdb';
 import { CoreFile } from './CoreFile';
 import { Geometry } from 'geojson';
+import { mapper } from '@simple4decision/aggrada-core';
+
+// Dynamically extract the enum keys
+const adminLevels = [...Object.keys(mapper.adminLevelMap), 'unknown'];
+const sridValues = [...Object.keys(mapper.sridMap), 'unknown'];
 
 @Table({
   indexes: [
     {
       fields: ['geometry'],
       using: 'GIST',
-      name: 'aggrada_spatial_geometry_gist',
+      name: 'aggrada_spatials_geometry_gist',
     },
   ],
 })
 export class AggradaSpatial extends Model {
+  // Optional: unique code like ISO, FIPS, or other administrative codes
   @Column({
     type: DataType.STRING,
   })
-  geo_code: string; // Optional: unique code like ISO, FIPS, or other administrative codes
+  geo_code?: string;
 
+  // Data source like IBGE, FIPS, NASA, NOAA, USER PROVIDED
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  source: string; // Data source like IBGE, ISO 3166, FIPS, NASA, NOAA, USER PROVIDED
+  source: string;
 
+  // Optional: The date when this spatial data became valid
   @Column({
     type: DataType.DATE,
   })
-  start_date: Date; // Optional: The date when this spatial data became valid
+  start_date?: Date;
 
+  // Optional: Stores additional relevant informantion of the spatial data, for example: adicional references, names or codes
   @Column({
     type: DataType.JSONB,
   })
-  metadata: object; // Optional: Stores additional relevant informantion of the spatial data, for example: adicional references, names or codes
+  properties?: Record<string, string | number | boolean | null>;
 
   @Column({
-    type: DataType.ENUM(
-      'country',
-      'state',
-      'province',
-      'region',
-      'county',
-      'district',
-      'municipality',
-      'city',
-      'town',
-      'village',
-      'neighborhood',
-      'subdistrict',
-      'street'
-    ),
+    type: DataType.ENUM(...adminLevels),
     allowNull: false,
   })
-  level:
-    | 'country' // admin_level=2
-    | 'state' // admin_level=4
-    | 'province' // admin_level=4
-    | 'region' // admin_level=4
-    | 'county' // admin_level=6
-    | 'district' // admin_level=6
-    | 'municipality' // admin_level=8
-    | 'city' // admin_level=8
-    | 'town' // admin_level=8
-    | 'village' // admin_level=8
-    | 'neighborhood' // admin_level=10
-    | 'subdistrict' // admin_level=10
-    | 'street'; // admin_level=12
+  admin_level: keyof typeof mapper.adminLevelMap | 'unknown';
 
+  // Stores geospatial data as either POINT, POLYGON or MULTI POLYGON
   @Column({
-    type: DataType.GEOMETRY('GEOMETRY', 4326), // Stores geospatial data as either POINT, POLYGON or MULTI POLYGON
+    type: DataType.GEOMETRY('GEOMETRY'),
     allowNull: false,
   })
   raw_geometry: Geometry;
 
+  // Specifies the spatial reference identifier
   @Column({
-    type: DataType.STRING,
+    type: DataType.ENUM(...sridValues),
     allowNull: false,
   })
-  raw_srs: string;
+  raw_srid: keyof typeof mapper.sridMap | 'unknown';
 
+  // Stores geospatial data as either POINT, POLYGON or MULTI POLYGON
   @Column({
-    type: DataType.GEOMETRY('GEOMETRY', 4326), // Stores geospatial data as either POINT, POLYGON or MULTI POLYGON
+    type: DataType.GEOMETRY('GEOMETRY', 4326),
     allowNull: false,
   })
   geometry: Geometry;
@@ -98,7 +83,7 @@ export class AggradaSpatial extends Model {
   @Column({
     type: DataType.INTEGER,
   })
-  core_file_id: number;
+  core_files_id?: number;
 
   /**
    * References
@@ -106,5 +91,5 @@ export class AggradaSpatial extends Model {
   @HasMany(() => {
     return AggradaObservation;
   })
-  aggrada_observation: AggradaObservation[];
+  aggrada_observations?: AggradaObservation[];
 }

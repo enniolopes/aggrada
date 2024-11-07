@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import { TZDate } from '@date-fns/tz';
-import { TimeRangeSchema } from '../types';
 import {
   addMonths,
   endOfDay,
@@ -9,6 +8,7 @@ import {
   endOfYear,
   format,
   parse,
+  parseISO,
 } from 'date-fns';
 
 const DEFAULT_TIMEZONE = 'UTC';
@@ -23,6 +23,28 @@ const timeRangePatterns: Array<{
     originTimezone: string
   ) => { originStart: TZDate; originEnd: TZDate };
 }> = [
+  // ISO 8601 Timestamp (e.g., "2023-01-04T03:00:00.000Z")
+  {
+    regex: /^\s*(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)\s*$/,
+    parser: ([, isoString], originTimezone) => {
+      const parsedDate = parseISO(isoString);
+      const tzDate = new TZDate(
+        parsedDate.getFullYear(),
+        parsedDate.getMonth(),
+        parsedDate.getDate(),
+        parsedDate.getHours(),
+        parsedDate.getMinutes(),
+        parsedDate.getSeconds(),
+        parsedDate.getMilliseconds(),
+        originTimezone
+      );
+
+      return {
+        originStart: tzDate,
+        originEnd: tzDate,
+      };
+    },
+  },
   // Year-Based Inputs (e.g., "2023")
   {
     regex: /^\s*(\d{4})\s*\.?$/,
@@ -38,6 +60,17 @@ const timeRangePatterns: Array<{
   // Month-Year Inputs (e.g., "2023-04", "04-2023", "April 2023")
   {
     regex: /^\s*(\d{4})[-/. ](\d{2})\s*$/,
+    parser: ([, year, month], originTimezone) => {
+      const originStart = new TZDate(+year, +month - 1, 1, originTimezone);
+      return {
+        originStart,
+        originEnd: endOfMonth(originStart),
+      };
+    },
+  },
+  // Identifier for the format "YYYYMM" (example: "202401")
+  {
+    regex: /^\s*(\d{4})(\d{2})\s*$/,
     parser: ([, year, month], originTimezone) => {
       const originStart = new TZDate(+year, +month - 1, 1, originTimezone);
       return {
@@ -77,6 +110,24 @@ const timeRangePatterns: Array<{
     parser: ([, year, month, day], originTimezone) => {
       const originStart = new TZDate(+year, +month - 1, +day, originTimezone);
       return { originStart, originEnd: endOfDay(originStart) };
+    },
+  },
+  // Add a regex and parser to handle Excel Serial Date format
+  {
+    regex: /^\s*(\d{5})\s*$/, // Assuming 5 digits for Excel Serial Date
+    parser: ([, excelSerial], originTimezone) => {
+      // Excel base date is 1900-01-01
+      const excelEpoch = new TZDate(1899, 11, 30, originTimezone); // Adjusting the zero-day (Excel's day 1 = 1900-01-01)
+      const originStart = new TZDate(
+        excelEpoch.getFullYear(),
+        excelEpoch.getMonth(),
+        excelEpoch.getDate() + parseInt(excelSerial, 10),
+        originTimezone
+      );
+      return {
+        originStart,
+        originEnd: endOfDay(originStart),
+      };
     },
   },
   {
@@ -141,8 +192,15 @@ export const createTimeRange = ({
   timezone = 'unknown',
 }: {
   date: string;
-  timezone: string;
-}): TimeRangeSchema => {
+  timezone?: string;
+}): {
+  rawDate: string; // Ex: "2024", "2024-10", "Q1 2024", etc.
+  rawTimezone: string; // IANA timezone
+  start: string; // Start date without timezone ISO 8601 string
+  end: string; // End date without timezone ISO 8601 string
+  startTz: string; // Start date with timezone ISO 8601 string
+  endTz: string; // End date with timezone ISO 8601 string
+} => {
   const formattedTZ =
     timezone === 'unknown' ? DEFAULT_TIMEZONE : timezone.trim();
 
