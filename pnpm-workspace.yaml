@@ -6,3 +6,4 @@ packages:
   - subsystem/aggrada-core
   - subsystem/aggrada-outsource
   - subsystem/aggrada-ingestion
+  - subsystem/aggrada-aggregator

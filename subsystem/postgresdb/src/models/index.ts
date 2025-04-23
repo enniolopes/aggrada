@@ -6,3 +6,4 @@ export { CoreFileCollection } from './CoreFileCollection';
 export { CoreOauthToken } from './CoreOauthToken';
 export { AggradaObservation } from './AggradaObservation';
 export { AggradaSpatial } from './AggradaSpatial';
+export { AggradaAggregated } from './AggradaAggregated';

@@ -1,4 +1,4 @@
-import { createTimeRange } from 'src/processors';
+import { transformer } from '../../../src';
 
 describe('createTimeRange', () => {
   describe('Valid Inputs', () => {
@@ -54,7 +54,7 @@ describe('createTimeRange', () => {
     ])(
       'should correctly parse input "$date" with timezone "$timezone"',
       ({ date, timezone, expected }) => {
-        const result = createTimeRange({ date, timezone });
+        const result = transformer.createTimeRange({ date, timezone });
 
         expect(result.rawDate).toBe(expected.rawDate);
         expect(result.rawTimezone).toBe(expected.rawTimezone);
@@ -77,7 +77,7 @@ describe('createTimeRange', () => {
     'should throw error for invalid input "$date" with timezone "$timezone"',
     ({ date, timezone }) => {
       expect(() => {
-        return createTimeRange({ date, timezone });
+        return transformer.createTimeRange({ date, timezone });
       }).toThrow();
     }
   );

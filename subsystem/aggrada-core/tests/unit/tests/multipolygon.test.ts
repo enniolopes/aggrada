@@ -1,5 +1,5 @@
 import { FeatureCollection, MultiPolygon } from 'geojson';
-import { splitMultiPolygon } from 'src/processors';
+import { transformer } from '../../../src';
 
 describe('splitMultiPolygon', () => {
   test('should split MultiPolygon into individual Polygon FeatureCollections', () => {
@@ -36,7 +36,7 @@ describe('splitMultiPolygon', () => {
       ],
     };
 
-    const result = splitMultiPolygon(multiPolygonGeoJson);
+    const result = transformer.splitMultiPolygon(multiPolygonGeoJson);
 
     expect(result).toHaveLength(2); // Deve haver dois FeatureCollections (um para cada Polygon)
 
@@ -91,7 +91,7 @@ describe('splitMultiPolygon', () => {
       features: [],
     };
 
-    const result = splitMultiPolygon(emptyGeoJson);
+    const result = transformer.splitMultiPolygon(emptyGeoJson);
 
     expect(result).toEqual([]);
   });
@@ -111,7 +111,7 @@ describe('splitMultiPolygon', () => {
       ],
     };
 
-    const result = splitMultiPolygon(emptyMultiPolygonGeoJson);
+    const result = transformer.splitMultiPolygon(emptyMultiPolygonGeoJson);
 
     expect(result).toEqual([]);
   });

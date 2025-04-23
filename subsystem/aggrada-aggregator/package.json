@@ -1,0 +1,33 @@
+{
+  "name": "@simple4decision/aggrada-aggregator",
+  "version": "0.1.0",
+  "description": "Simple4Decision's Aggrada Aggregator",
+  "author": "enniolopes@usp.br",
+  "type": "module",
+  "exports": "./src/index.ts",
+  "scripts": {
+    "start": "npx tsx src/cli.ts"
+  },
+  "dependencies": {
+    "@ttoss/postgresdb": "0.2.14",
+    "@ttoss/postgresdb-cli": "^0.1.12",
+    "@ttoss/config": "^1.32.6",
+    "@simple4decision/postgresdb": "workspace:^",
+    "@simple4decision/aggrada-core": "workspace:^",
+    "@types/pg": "^8.11.13",
+    "@types/pg-copy-streams": "^1.2.5",
+    "pg": "^8.14.1",
+    "pg-copy-streams": "^6.0.6"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.5",
+    "typescript": "^5.5.4",
+    "tsx": "4.19.1",
+    "tsup": "^8.0.2"
+  },
+  "keywords": [],
+  "engines": {
+    "node": "^20.0.0",
+    "pnpm": "^10.0.0"
+  }
+}
