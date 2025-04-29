@@ -1,0 +1,45 @@
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+.env/
+.env.*
+!.env.example
+.local/
+
+# Package build
+build/
+dist/
+*.egg-info/
+
+# Test and coverage outputs
+.pytest_cache/
+coverage/
+.coverage*
+*.cover
+*.lcov
+
+# Logs
+*.log
+
+# IDE/editor configs
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Sphinx documentation build
+/docs/build/
+
+# Temporary files
+tmp_*
+*.pid
+*.seed
