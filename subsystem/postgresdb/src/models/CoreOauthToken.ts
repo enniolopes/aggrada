@@ -1,6 +1,10 @@
 import { Column, DataType, Model, Table } from '@ttoss/postgresdb';
 
-@Table
+@Table({
+  tableName: 'core_oauth_tokens',
+  underscored: true,
+  freezeTableName: true,
+})
 export class CoreOauthToken extends Model {
   @Column({
     type: DataType.JSONB,

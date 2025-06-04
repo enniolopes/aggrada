@@ -1,9 +1,9 @@
 # Only add packages that are Node.js projects
 packages:
-  - subsystem/app
-  - subsystem/api
-  - subsystem/postgresdb
   - subsystem/aggrada-core
+  - subsystem/aggrada-ingestor
   - subsystem/aggrada-outsource
-  - subsystem/aggrada-ingestion
   - subsystem/aggrada-aggregator
+  - subsystem/api
+  - subsystem/app
+  - subsystem/postgresdb

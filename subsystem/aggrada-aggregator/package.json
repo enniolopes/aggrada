@@ -9,11 +9,11 @@
     "start": "npx tsx src/cli.ts"
   },
   "dependencies": {
+    "@simple4decision/aggrada-core": "workspace:^",
+    "@simple4decision/postgresdb": "workspace:^",
+    "@ttoss/config": "^1.32.6",
     "@ttoss/postgresdb": "0.2.14",
     "@ttoss/postgresdb-cli": "^0.1.12",
-    "@ttoss/config": "^1.32.6",
-    "@simple4decision/postgresdb": "workspace:^",
-    "@simple4decision/aggrada-core": "workspace:^",
     "@types/pg": "^8.11.13",
     "@types/pg-copy-streams": "^1.2.5",
     "pg": "^8.14.1",
@@ -21,13 +21,13 @@
   },
   "devDependencies": {
     "dotenv": "^16.4.5",
-    "typescript": "^5.5.4",
+    "tsup": "^8.0.2",
     "tsx": "4.19.1",
-    "tsup": "^8.0.2"
+    "typescript": "^5.5.4"
   },
   "keywords": [],
   "engines": {
-    "node": "^20.0.0",
+    "node": "^22.0.0",
     "pnpm": "^10.0.0"
   }
 }

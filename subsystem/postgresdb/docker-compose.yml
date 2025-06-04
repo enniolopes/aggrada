@@ -8,8 +8,8 @@ services:
       - POSTGRES_DB=$DB_NAME
       - POSTGRES_USER=$DB_USERNAME
       - POSTGRES_PASSWORD=$DB_PASSWORD
-      - PGDATA=/ennio.lopes/postgres/var/lib/postgresql/data
+      - PGDATA=/data/postgres/var/lib/postgresql/data
     ports:
       - 5432:5432
     volumes:
-      - /home/ennio.lopes/agribio:/ennio.lopes/postgres/var/lib/postgresql/data
+      - /data/postgres:/data/postgres/var/lib/postgresql/data

@@ -1,12 +1,13 @@
+import { Column, DataType, ForeignKey, Model, Table } from '@ttoss/postgresdb';
+
 import { AggradaSpatial } from './AggradaSpatial';
-import { Table, Column, DataType, ForeignKey, Model } from '@ttoss/postgresdb';
 
 @Table({
   tableName: 'aggrada_aggregateds',
   underscored: true,
   freezeTableName: true,
 })
-export class AggradaAggregated extends Model<AggradaAggregated> {
+export class AggradaAggregated extends Model {
   /**
    * Metadata
    */
@@ -14,44 +15,46 @@ export class AggradaAggregated extends Model<AggradaAggregated> {
     type: DataType.JSONB,
     allowNull: true,
   })
-  declare aggregationParams?: Record<string, unknown>;
+  declare aggregation_params?: Record<string, unknown>;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
   })
-  declare logId?: string;
+  declare log_id?: string;
 
   /**
    * Spatial keys
    */
-  @ForeignKey(() => AggradaSpatial)
+  @ForeignKey(() => {
+    return AggradaSpatial;
+  })
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
     primaryKey: true,
   })
-  declare spatialId: number;
+  declare spatial_id: number;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
     primaryKey: true,
   })
-  declare spatialGeoCode: string;
+  declare spatial_geo_code: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
   })
-  declare spatialName?: string;
+  declare spatial_name?: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
     primaryKey: true,
   })
-  declare spatialSubdivision: string;
+  declare spatial_subdivision: string;
 
   /**
    * Time keys
@@ -61,20 +64,20 @@ export class AggradaAggregated extends Model<AggradaAggregated> {
     allowNull: false,
     primaryKey: true,
   })
-  declare timeStartDate: Date;
+  declare time_start_date: Date;
 
   @Column({
     type: DataType.DATE,
     allowNull: false,
     primaryKey: true,
   })
-  declare timeEndDate: Date;
+  declare time_end_date: Date;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
   })
-  declare timeLabel?: string;
+  declare time_label?: string;
 
   /**
    * Aggregation data

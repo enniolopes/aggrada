@@ -68,6 +68,17 @@ const timeRangePatterns: Array<{
       };
     },
   },
+  // Identifier for the format "YYYY-M" (example: "2024-1")
+  {
+    regex: /^\s*(\d{4})[-/. ](\d{1})\s*$/,
+    parser: ([, year, month], originTimezone) => {
+      const originStart = new TZDate(+year, +month - 1, 1, originTimezone);
+      return {
+        originStart,
+        originEnd: endOfMonth(originStart),
+      };
+    },
+  },
   // Identifier for the format "YYYYMM" (example: "202401")
   {
     regex: /^\s*(\d{4})(\d{2})\s*$/,

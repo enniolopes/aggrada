@@ -1,0 +1,22 @@
+{
+  "name": "@simple4decision/aggrada-ingestor",
+  "version": "0.1.1",
+  "description": "Microserviço único para ingestão de geometrias e observações no Aggrada.",
+  "author": "enniolopes@usp.br",
+  "type": "module",
+  "scripts": {
+    "ingest-geometry": "npx tsx src/scripts/ingest-geometry.ts",
+    "ingest-observations": "npx tsx src/scripts/ingest-observations.ts",
+    "cli:previewFile": "npx tsx cli/previewFile.ts",
+    "cli:compareFiles": "npx tsx cli/compareFiles.ts"
+  },
+  "dependencies": {
+    "@simple4decision/aggrada-core": "workspace:^",
+    "@simple4decision/postgresdb": "workspace:^"
+  },
+  "devDependencies": {
+    "dotenv": "^16.5.0",
+    "tsx": "^4.19.4",
+    "@ttoss/postgresdb": "^0.2.15"
+  }
+}

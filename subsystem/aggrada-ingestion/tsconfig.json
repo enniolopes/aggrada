@@ -1,9 +1,0 @@
-{
-  "extends": "@ttoss/config/tsconfig.json",
-  "include": [
-    "src",
-    "../postgresdb/src",
-    "../aggrada-core/src",
-    "../aggrada-outsource/src"
-  ]
-}

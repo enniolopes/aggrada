@@ -35,6 +35,35 @@ describe('generateTimeIntervals', () => {
        */
       {
         timeRange: {
+          start: new Date(Date.UTC(2024, 0, 1, 0, 0, 0, 0)),
+          end: new Date(Date.UTC(2024, 11, 31, 23, 59, 59, 999)),
+        },
+        granularity: 'quarterly',
+        expected: [
+          {
+            start: new Date('2024-01-01T00:00:00.000Z'),
+            end: new Date('2024-03-31T23:59:59.999Z'),
+            label: 'Q1 2024'
+          },
+          {
+            start: new Date('2024-04-01T00:00:00.000Z'),
+            end: new Date('2024-06-30T23:59:59.999Z'),
+            label: 'Q2 2024'
+          },
+          {
+            start: new Date('2024-07-01T00:00:00.000Z'),
+            end: new Date('2024-09-30T23:59:59.999Z'),
+            label: 'Q3 2024'
+          },
+          {
+            start: new Date('2024-10-01T00:00:00.000Z'),
+            end: new Date('2024-12-31T23:59:59.999Z'),
+            label: 'Q4 2024'
+          },
+        ],
+      },
+      {
+        timeRange: {
           start: new Date(Date.UTC(2021, 0, 1, 0, 0, 0, 0)),
           end: new Date(Date.UTC(2023, 11, 31, 23, 59, 59, 999)),
         },
@@ -105,6 +134,75 @@ describe('generateTimeIntervals', () => {
       /**
        * Monthly
        */
+      {
+        timeRange: {
+          start: new Date(Date.UTC(2024, 0, 1, 0, 0, 0, 0)),
+          end: new Date(Date.UTC(2024, 11, 31, 23, 59, 59, 999)),
+        },
+        granularity: 'monthly',
+        expected: [
+          {
+            start: new Date('2024-01-01T00:00:00.000Z'),
+            end: new Date('2024-01-31T23:59:59.999Z'),
+            label: '2024-01'
+          },
+          {
+            start: new Date('2024-02-01T00:00:00.000Z'),
+            end: new Date('2024-02-29T23:59:59.999Z'),
+            label: '2024-02'
+          },
+          {
+            start: new Date('2024-03-01T00:00:00.000Z'),
+            end: new Date('2024-03-31T23:59:59.999Z'),
+            label: '2024-03'
+          },
+          {
+            start: new Date('2024-04-01T00:00:00.000Z'),
+            end: new Date('2024-04-30T23:59:59.999Z'),
+            label: '2024-04'
+          },
+          {
+            start: new Date('2024-05-01T00:00:00.000Z'),
+            end: new Date('2024-05-31T23:59:59.999Z'),
+            label: '2024-05'
+          },
+          {
+            start: new Date('2024-06-01T00:00:00.000Z'),
+            end: new Date('2024-06-30T23:59:59.999Z'),
+            label: '2024-06'
+          },
+          {
+            start: new Date('2024-07-01T00:00:00.000Z'),
+            end: new Date('2024-07-31T23:59:59.999Z'),
+            label: '2024-07'
+          },
+          {
+            start: new Date('2024-08-01T00:00:00.000Z'),
+            end: new Date('2024-08-31T23:59:59.999Z'),
+            label: '2024-08'
+          },
+          {
+            start: new Date('2024-09-01T00:00:00.000Z'),
+            end: new Date('2024-09-30T23:59:59.999Z'),
+            label: '2024-09'
+          },
+          {
+            start: new Date('2024-10-01T00:00:00.000Z'),
+            end: new Date('2024-10-31T23:59:59.999Z'),
+            label: '2024-10'
+          },
+          {
+            start: new Date('2024-11-01T00:00:00.000Z'),
+            end: new Date('2024-11-30T23:59:59.999Z'),
+            label: '2024-11'
+          },
+          {
+            start: new Date('2024-12-01T00:00:00.000Z'),
+            end: new Date('2024-12-31T23:59:59.999Z'),
+            label: '2024-12'
+          },
+        ],
+      },
       {
         timeRange: {
           start: new Date(Date.UTC(2021, 0, 1, 0, 0, 0, 0)),
@@ -228,8 +326,6 @@ describe('generateTimeIntervals', () => {
         granularity: 'monthly',
         expected: null
       },
-
-
       /**
        * Sucess with incomplete year
        */
@@ -305,14 +401,13 @@ describe('generateTimeIntervals', () => {
           granularity,
         });
 
-        // console.log('evaluate: ', {
-        //   input: {
-        //     timeRange,
-        //     granularity: granularityValue,
-        //   },
-        //   result,
-        //   expected,
-        // });
+        console.log('result: ', {
+          input: {
+          timeRange,
+          granularity,
+        },
+        result
+        });
 
         expect(result).toStrictEqual(expected);
       }

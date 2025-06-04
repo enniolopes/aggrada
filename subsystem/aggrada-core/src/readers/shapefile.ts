@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
+import fs from 'node:fs';
+import path from 'node:path';
+
 import { Geometry } from 'geojson';
-import { SpatialCore } from '../Types';
-import fs from 'fs';
-import path from 'path';
 import shapefile from 'shapefile';
+import { SpatialCore } from '../Types';
 
 /**
  * Reads the .prj file to determine SRID based on projection info.
@@ -83,9 +84,10 @@ export const readShapefile = async ({
             : undefined,
         admin_level: level ? level : properties?.level,
         source,
-        startDate: properties?.startDate
-          ? new Date(properties.startDate)
-          : new Date(),
+        // startDate: properties?.startDate
+        //   ? new Date(properties.startDate)
+        //   : new Date(),
+        startDate: new Date('1970-01-01T00:00:00Z'),
         properties: {
           file: path.basename(shpPath),
           fileFormat: 'shp',

@@ -1,9 +1,8 @@
 /* eslint-disable no-console */
 import 'dotenv/config';
 
-import { db } from '../db';
-import { indexer } from '..';
-import { reader, transformer } from '../../../aggrada-core/src';
+import { reader, transformer } from '@simple4decision/aggrada-core';
+import { db, indexer } from '@simple4decision/postgresdb';
 
 const createObservation = async ({
   ibgeCodeKeys,
@@ -34,8 +33,8 @@ const createObservation = async ({
       geo_code: ibgeCode,
       source: 'ibge',
     })
-    .catch((err) => {
-      console.log('Spatial id not founded: ', err);
+    .catch((error) => {
+      console.log('Spatial id not founded: ', error);
       return null;
     });
 
@@ -129,8 +128,8 @@ export const ingestFromIbgeId = async ({
               fixedTime,
               data,
             });
-          } catch (err) {
-            console.log(`Error creating: ${err}\n`, data);
+          } catch (error) {
+            console.log(`Error creating: ${error}\n`, data);
           }
         }
       }
@@ -154,8 +153,8 @@ export const ingestFromIbgeId = async ({
               fixedTime,
               data,
             });
-          } catch (err) {
-            console.log(`Error creating: ${err}\n`, data);
+          } catch (error) {
+            console.log(`Error creating: ${error}\n`, data);
           }
         }
       }

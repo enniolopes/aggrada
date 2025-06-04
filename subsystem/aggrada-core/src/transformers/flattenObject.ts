@@ -2,19 +2,38 @@
 export const flattenObject = ({
   obj,
   parentKey = '',
-  result = {},
+  result= {},
+  depth = 0,
+  maxDepth = 20,
 }: {
   obj: any;
   parentKey?: string;
-  result?: any;
+  result?: Record<string, any>;
+  depth?: number;
+  maxDepth?: number;
 }): Record<string, any> => {
-  Object.keys(obj).map((key) => {
+  // Proteção contra referências circulares e profundidade excessiva
+  if (obj === null || obj === undefined || typeof obj !== 'object' || depth > maxDepth) {
+    return result;
+  }
+
+  Object.entries(obj).forEach(([key, value]) => {
     const newKey = parentKey ? `${parentKey}_${key}` : key;
-    if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
-      flattenObject({ obj: obj[key], parentKey: newKey, result });
+    
+    if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+      // Recursão para objetos aninhados
+      flattenObject({
+        obj: value,
+        parentKey: newKey,
+        result,
+        depth: depth + 1,
+        maxDepth
+      });
     } else {
-      result[newKey] = obj[key];
+      // Valor primitivo, array, null ou undefined
+      result[newKey] = value;
     }
   });
+  
   return result;
 };

@@ -4,12 +4,21 @@ import 'dotenv/config';
 import { db } from '../db';
 import { getAggParams, AggConfig } from './getAggParams';
 
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const dbAggregateData = async ({
   aggConfig,
 }: {
   aggConfig: AggConfig;
 }) => {
-  const aggParams = await getAggParams(aggConfig);
+  const aggParams = await getAggParams(aggConfig).catch(() => {
+    return null;
+  });
+
+  if (!aggParams) {
+    console.error('Error: Could not retrieve aggregation parameters. ', aggConfig);
+    return
+  }
   console.log('Aggregating data for:', aggParams.subdivisions.length, 'subdivisions and', aggParams.temporalRanges.length, 'temporal ranges.');
 
   const createdAt = new Date();
@@ -19,16 +28,15 @@ export const dbAggregateData = async ({
       console.log('Aggregating data for:', subdivision.dataValues.geo_code, 'from', temporalRange.start, 'to', temporalRange.end);
 
       // Sleep
-      const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-      await sleep(550);
+      await sleep(310);
 
       const subdivisionGeometry = (await db.AggradaSpatial.findOne({
         where: { id: subdivision.dataValues.id },
-        attributes: ['geometry' , 'properties'],
-      }))?.dataValues as { geometry: object; properties: { name: string } };
+        attributes: ['raw_geometry' , 'properties'],
+      }))?.dataValues as { raw_geometry: object; properties: { name: string } };
 
-      if(!subdivisionGeometry?.geometry) {
-        console.error('Error: Could not find geometry for subdivision:', subdivision.dataValues.geo_code);
+      if(!subdivisionGeometry?.raw_geometry) {
+        console.error('Error: Could not find raw_geometry for subdivision:', subdivision.dataValues.geo_code);
       }
 
       const aggregatedDataKeys: any = {
@@ -78,12 +86,12 @@ export const dbAggregateData = async ({
           FROM
             aggrada_observations o
           JOIN
-            aggrada_spatials s ON o.aggrada_spatial_id = s.id,
+            aggrada_spatials s ON o.aggrada_spatials_id = s.id,
             LATERAL jsonb_object_keys(o.data) AS k(key)
           WHERE
             (
-              ST_Area(ST_Intersection(s.geometry, ST_GeomFromGeoJSON(:subdivisionGeometry))) >= 0.95 * ST_Area(s.geometry)
-              AND ST_Area(s.geometry) <= 1.05 * ST_Area(ST_GeomFromGeoJSON(:subdivisionGeometry))
+              ST_Area(ST_Intersection(s.raw_geometry, ST_GeomFromGeoJSON(:subdivisionGeometry))) >= 0.95 * ST_Area(s.raw_geometry)
+              AND ST_Area(s.raw_geometry) <= 1.05 * ST_Area(ST_GeomFromGeoJSON(:subdivisionGeometry))
             )
             AND (
               tstzrange(:time_start_date, :time_end_date, '[]') @> o.temporal_range OR
@@ -106,7 +114,7 @@ export const dbAggregateData = async ({
             replacements: {
               ...aggregatedDataKeys,
               aggregation_params: JSON.stringify(aggConfig),
-              subdivisionGeometry: JSON.stringify(subdivisionGeometry.geometry),
+              subdivisionGeometry: JSON.stringify(subdivisionGeometry.raw_geometry),
               created_at: createdAt,
             },
           }

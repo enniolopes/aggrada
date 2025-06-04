@@ -1,10 +1,13 @@
 {
   "name": "@simple4decision/aggrada-core",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Aggrada Core",
   "author": "enniolopes@usp.br",
   "type": "module",
   "exports": "./src/index.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "jest --projects tests/unit"
   },
@@ -21,8 +24,6 @@
     "@types/jest": "^29.5.13",
     "@types/node": "^22.7.5",
     "@types/shapefile": "^0.6.4",
-    "jest": "^29.7.0",
-    "tsx": "^4.19.1",
-    "typescript": "^5.6.2"
+    "jest": "^29.7.0"
   }
 }

@@ -19,7 +19,7 @@ export const adminLevelMap: { [key: string]: number } = {
   neighborhood: 10, // Neighborhood, a small community within a city or town
   subdistrict: 10, // Subdivision of a district
   block: 11, // City block or urban division
-  street: 11, // Street or road
+  street: 12, // Street or road
   address: 13, // Specific location, not necessarily tied to formal administrative divisions
-  latlong: 13, // Specific location, not necessarily tied to formal administrative divisions
+  latlong: 15, // Specific location, not necessarily tied to formal administrative divisions
 };
