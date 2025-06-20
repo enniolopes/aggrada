@@ -7,21 +7,23 @@ import { transformer } from '@simple4decision/aggrada-core';
 // import { models } from '@simple4decision/postgresdb';
 
 export type AggConfig = {
-    aoi: {
-      geo_code: string,
-      source: string,
-    };
-    subdivision: string;
-    subdivisionSource: string;
-    timeRange: {
-      start: Date;
-      end: Date;
-    },
-    timeGranularity: string;
-    logId?: string
+  aoi?: {
+    geo_code: string;
+    source: string;
+  };
+  subdivision: string;
+  subdivisionSource: string;
+  timeRange: {
+    start: Date;
+    end: Date;
+  };
+  timeGranularity: string;
+  logId?: string;
 };
 
-export const getAggParams = async (aggConfig: AggConfig): Promise<{
+export const getAggParams = async (
+  aggConfig: AggConfig
+): Promise<{
   subdivisions: any[];
   temporalRanges: { start: Date; end: Date; label: string }[];
 }> => {
@@ -30,14 +32,14 @@ export const getAggParams = async (aggConfig: AggConfig): Promise<{
   //   attributes: ['id', 'geo_code', 'geometry'],
   //   where: aggConfig.aoi,
   // });
-  
+
   // if (!aoiSpatialRecord?.geometry) {
   //   throw new Error('Invalid AOI spatial record');
   // }
 
   // Prepare the geometry safely for the query
   // const aoiGeometry = JSON.stringify(aoiSpatialRecord.geometry).replace(/'/g, "''");
-  
+
   const subdivisions = await db.AggradaSpatial.findAll({
     // where: {
     //   admin_level: aggConfig.subdivision,
@@ -54,7 +56,7 @@ export const getAggParams = async (aggConfig: AggConfig): Promise<{
     attributes: ['id', 'geo_code', 'source', 'start_date'],
   });
 
-  if(!subdivisions || subdivisions.length === 0) {
+  if (!subdivisions || subdivisions.length === 0) {
     throw new Error('No subdivisions found for the given AOI');
   }
 
@@ -64,12 +66,14 @@ export const getAggParams = async (aggConfig: AggConfig): Promise<{
     granularity: aggConfig.timeGranularity,
   });
 
-  if(!temporalRanges) {
-    throw new Error('No temporal ranges found for the given time range and granularity');
+  if (!temporalRanges) {
+    throw new Error(
+      'No temporal ranges found for the given time range and granularity'
+    );
   }
 
   return {
     subdivisions,
-    temporalRanges
+    temporalRanges,
   };
-}
+};

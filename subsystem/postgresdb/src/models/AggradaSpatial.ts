@@ -32,6 +32,10 @@ type SRID = (typeof sridValues)[number];
       using: 'GIST',
       name: 'aggrada_spatials_geometry_gist',
     },
+    {
+      fields: ['geo_code'],
+      name: 'aggrada_spatials_geo_code_idx',
+    },
   ],
 })
 export class AggradaSpatial extends Model {
@@ -61,7 +65,7 @@ export class AggradaSpatial extends Model {
   @Column({
     type: DataType.DATE,
   })
-  start_date?: Date;
+  start_date?: Date | string;
 
   /**
    * Additional metadata and properties

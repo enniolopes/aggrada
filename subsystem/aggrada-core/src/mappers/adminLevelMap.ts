@@ -6,11 +6,15 @@
  */
 export const adminLevelMap: { [key: string]: number } = {
   country: 2, // Represents the national level
+  region: 3, // Administrative region
   state: 4, // State or province, depending on the country
   province: 4, // Province, used in certain countries
-  region: 4, // Administrative region
   county: 6, // County or similar subdivisions
   district: 6, // District, often used in urban or rural settings
+  "regioes-intermediarias": 6, // Intermediate regions, used in Brazil
+  "regioes-imediatas": 7, // Immediate regions, used in Brazil
+  "mesorregioes": 6, // Mesoregions, used in Brazil
+  "microrregioes": 7, // Microrregions, used in Brazil
   municipality: 8, // Municipality or city-level administration
   city: 8, // City, urban area
   town: 8, // Town or larger village

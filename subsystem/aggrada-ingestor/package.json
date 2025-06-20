@@ -17,6 +17,7 @@
   "devDependencies": {
     "dotenv": "^16.5.0",
     "tsx": "^4.19.4",
-    "@ttoss/postgresdb": "^0.2.15"
+    "@ttoss/postgresdb": "^0.2.15",
+    "sequelize": "^6.37.7"
   }
 }

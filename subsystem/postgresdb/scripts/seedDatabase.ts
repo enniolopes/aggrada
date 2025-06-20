@@ -3,8 +3,8 @@ import 'dotenv/config';
 import { db } from '../src/db';
 
 (async () => {
-  const users = await db.CoreUser.findAll();
+  const obs = await db.AggradaObservation.findOne();
   // eslint-disable-next-line no-console
-  console.log(users);
+  console.log(obs?.dataValues);
   await db.sequelize.close();
 })();

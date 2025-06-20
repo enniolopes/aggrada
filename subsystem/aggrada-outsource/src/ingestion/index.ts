@@ -1,1 +1,1 @@
-export * from './ibgeCities';
+export * from './ibgeMeshMaps';

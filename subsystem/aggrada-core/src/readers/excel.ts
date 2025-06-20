@@ -26,8 +26,9 @@ export const excelToJsonStream = async (
     info: {
       batchNumber: number;
       batchSize: number;
-    },
-  ) => Promise<void> | void
+    }
+  ) => Promise<void> | void,
+  p0: () => void
 ): Promise<void> => {
   let workbook: xlsx.WorkBook;
 
@@ -104,7 +105,9 @@ export const excelPreview = async ({
       const fileBuffer = fs.readFileSync(file);
       workbook = xlsx.read(fileBuffer, { type: 'buffer' });
     } catch (error) {
-      throw new Error(`Failed to calculate file size or read Excel file.\n${error}`);
+      throw new Error(
+        `Failed to calculate file size or read Excel file.\n${error}`
+      );
     }
   } else if (Buffer.isBuffer(file)) {
     try {
@@ -155,7 +158,7 @@ export const excelPreview = async ({
 
 /**
  * Compares headers of all Excel files in a directory and groups files by identical headers.
- * 
+ *
  * @param options - Configuration options for comparing Excel headers.
  * @returns A promise resolving to an object containing groups of files with identical headers.
  */
@@ -177,20 +180,21 @@ export const compareExcelHeaders = async ({
   if (!fs.existsSync(directory)) {
     throw new Error(`Directory does not exist: ${directory}`);
   }
-  
+
   // Get all Excel files from the directory
-  const files = fs.readdirSync(directory)
-    .filter(file => filePattern.test(file))
-    .map(file => path.join(directory, file));
-  
+  const files = fs
+    .readdirSync(directory)
+    .filter((file) => filePattern.test(file))
+    .map((file) => path.join(directory, file));
+
   // Return early if no files found
   if (files.length === 0) {
     return {
       groups: [],
       summary: {
         totalFiles: 0,
-        uniqueHeaderGroups: 0
-      }
+        uniqueHeaderGroups: 0,
+      },
     };
   }
 
@@ -206,23 +210,23 @@ export const compareExcelHeaders = async ({
   for (const file of files) {
     try {
       const preview = await excelPreview({
-        file
+        file,
       });
-      
+
       if (preview.headers) {
         // Sort headers to ensure consistent comparison
         const sortedHeaders = [...preview.headers].sort();
         // Create a string key from sorted headers for grouping
         const headerKey = JSON.stringify(sortedHeaders);
-        
+
         // Add to existing group or create new group
         if (!headerGroups[headerKey]) {
           headerGroups[headerKey] = {
             files: [],
-            headers: sortedHeaders
+            headers: sortedHeaders,
           };
         }
-        
+
         // Add file to appropriate group
         headerGroups[headerKey].files.push(file);
       }
@@ -236,7 +240,7 @@ export const compareExcelHeaders = async ({
     groups: Object.values(headerGroups),
     summary: {
       totalFiles: files.length,
-      uniqueHeaderGroups: Object.keys(headerGroups).length
-    }
+      uniqueHeaderGroups: Object.keys(headerGroups).length,
+    },
   };
 };

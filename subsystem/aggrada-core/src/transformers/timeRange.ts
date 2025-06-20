@@ -123,7 +123,15 @@ const timeRangePatterns: Array<{
       return { originStart, originEnd: endOfDay(originStart) };
     },
   },
-  // Add a regex and parser to handle Excel Serial Date format
+  // Brazilian/European date format (dd/mm/yyyy)
+  {
+    regex: /^\s*(\d{1,2})[-/.](\d{1,2})[-/.](\d{4})\s*$/,
+    parser: ([, day, month, year], originTimezone) => {
+      const originStart = new TZDate(+year, +month - 1, +day, originTimezone);
+      return { originStart, originEnd: endOfDay(originStart) };
+    },
+  },
+  // Excel Serial Date format
   {
     regex: /^\s*(\d{5})\s*$/, // Assuming 5 digits for Excel Serial Date
     parser: ([, excelSerial], originTimezone) => {

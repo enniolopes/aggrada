@@ -1,2 +1,2 @@
-export * from './cityMap';
-export * from './cityRegistry';
+export * from './localitiesApi';
+export * from './geoMeshesApi';

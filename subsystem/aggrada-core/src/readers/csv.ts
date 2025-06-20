@@ -25,12 +25,13 @@ export const csvToJsonStream = async (
     batchSize?: number; // Optional batch size for processing multiple rows at once
   },
   processFn: (
-    rows: Record<string, string>[], 
+    rows: Record<string, string>[],
     info: {
       batchNumber: number;
       batchSize: number;
     }
-  ) => Promise<void> | void
+  ) => Promise<void> | void,
+  p0: () => void
 ): Promise<void> => {
   let stream: Readable;
 
@@ -45,7 +46,7 @@ export const csvToJsonStream = async (
     );
   }
 
-  const delimiter = (await detectCSVDelimiter({file})).delimiter;
+  const delimiter = (await detectCSVDelimiter({ file })).delimiter;
   const parser = parse({
     delimiter,
     columns,
@@ -137,7 +138,7 @@ export const csvPreview = async ({
     );
   }
 
-  const delimiter = (await detectCSVDelimiter({file})).delimiter;
+  const delimiter = (await detectCSVDelimiter({ file })).delimiter;
   const parser = parse({
     delimiter,
     columns,
@@ -181,7 +182,7 @@ export const csvPreview = async ({
 
 /**
  * Compares headers of all CSV files in a directory and groups files by identical headers.
- * 
+ *
  * @param options - Configuration options for comparing CSV headers.
  * @returns A promise resolving to an object containing groups of files with identical headers.
  */
@@ -203,20 +204,21 @@ export const compareCSVHeaders = async ({
   if (!fs.existsSync(directory)) {
     throw new Error(`Directory does not exist: ${directory}`);
   }
-  
+
   // Get all CSV files from the directory
-  const files = fs.readdirSync(directory)
-    .filter(file => filePattern.test(file))
-    .map(file => path.join(directory, file));
-  
+  const files = fs
+    .readdirSync(directory)
+    .filter((file) => filePattern.test(file))
+    .map((file) => path.join(directory, file));
+
   // Return early if no files found
   if (files.length === 0) {
     return {
       groups: [],
       summary: {
         totalFiles: 0,
-        uniqueHeaderGroups: 0
-      }
+        uniqueHeaderGroups: 0,
+      },
     };
   }
 
@@ -233,23 +235,23 @@ export const compareCSVHeaders = async ({
     try {
       const preview = await csvPreview({
         file,
-        columns: true
+        columns: true,
       });
-      
+
       if (preview.headers) {
         // Sort headers to ensure consistent comparison
         const sortedHeaders = [...preview.headers].sort();
         // Create a string key from sorted headers for grouping
         const headerKey = JSON.stringify(sortedHeaders);
-        
+
         // Add to existing group or create new group
         if (!headerGroups[headerKey]) {
           headerGroups[headerKey] = {
             files: [],
-            headers: sortedHeaders
+            headers: sortedHeaders,
           };
         }
-        
+
         // Add file to appropriate group
         headerGroups[headerKey].files.push(file);
       }
@@ -263,8 +265,8 @@ export const compareCSVHeaders = async ({
     groups: Object.values(headerGroups),
     summary: {
       totalFiles: files.length,
-      uniqueHeaderGroups: Object.keys(headerGroups).length
-    }
+      uniqueHeaderGroups: Object.keys(headerGroups).length,
+    },
   };
 };
 
@@ -276,20 +278,24 @@ export const compareCSVHeaders = async ({
  * @returns A promise resolving to the detected delimiter and confidence metadata.
  */
 export const detectCSVDelimiter = async ({
-  file
+  file,
 }: {
-  file: string | Buffer
+  file: string | Buffer;
 }): Promise<{
   delimiter: string;
   confidence: number; // 0-1 score indicating confidence in the detected delimiter
-  possibleDelimiters: Array<{ delimiter: string; consistency: number; avgColumns: number }>;
+  possibleDelimiters: Array<{
+    delimiter: string;
+    consistency: number;
+    avgColumns: number;
+  }>;
 }> => {
   // Common delimiters to check
   const delimitersToCheck = [',', ';', '\t', '|', ':'];
-  
+
   // Read file sample
   let sampleContent: string;
-  
+
   if (typeof file === 'string') {
     // Read first 10KB of the file to analyze
     const fd = fs.openSync(file, 'r');
@@ -301,37 +307,41 @@ export const detectCSVDelimiter = async ({
     // Use the buffer directly, but limit to first 10KB
     sampleContent = file.slice(0, 10240).toString();
   } else {
-    throw new Error('Invalid file input. It must be a string (file path) or Buffer.');
+    throw new Error(
+      'Invalid file input. It must be a string (file path) or Buffer.'
+    );
   }
-  
+
   // Split into lines
-  const lines = sampleContent.split(/\r?\n/).filter(line => line.trim().length > 0);
-  
+  const lines = sampleContent
+    .split(/\r?\n/)
+    .filter((line) => line.trim().length > 0);
+
   // Analyze at most 20 lines
   const linesToAnalyze = lines.slice(0, Math.min(20, lines.length));
-  
+
   if (linesToAnalyze.length < 2) {
     // Not enough data to analyze
     return {
       delimiter: ',', // Default to comma
       confidence: 0,
-      possibleDelimiters: []
+      possibleDelimiters: [],
     };
   }
-  
+
   // Test each delimiter
-  const results = delimitersToCheck.map(delimiter => {
+  const results = delimitersToCheck.map((delimiter) => {
     // Parse lines with current delimiter and count columns per line
-    const columnCounts = linesToAnalyze.map(line => {
+    const columnCounts = linesToAnalyze.map((line) => {
       // Count columns (considering quoted fields)
       const fields = [];
       let field = '';
       let inQuotes = false;
-      
+
       for (let i = 0; i < line.length; i++) {
         const char = line[i];
-        
-        if (char === '"' && (i === 0 || line[i-1] !== '\\')) {
+
+        if (char === '"' && (i === 0 || line[i - 1] !== '\\')) {
           inQuotes = !inQuotes;
         } else if (char === delimiter && !inQuotes) {
           fields.push(field);
@@ -340,26 +350,27 @@ export const detectCSVDelimiter = async ({
           field += char;
         }
       }
-      
+
       // Add the last field
       fields.push(field);
       return fields.length;
     });
-    
+
     // Calculate consistency and average column count
     const uniqueCounts = new Set(columnCounts);
     const maxCount = Math.max(...columnCounts);
     const consistency = 1 - (uniqueCounts.size - 1) / linesToAnalyze.length;
-    const avgColumns = columnCounts.reduce((sum, count) => sum + count, 0) / columnCounts.length;
-    
+    const avgColumns =
+      columnCounts.reduce((sum, count) => sum + count, 0) / columnCounts.length;
+
     return {
       delimiter,
       consistency,
       avgColumns,
-      maxColumnCount: maxCount
+      maxColumnCount: maxCount,
     };
   });
-  
+
   // Sort results by consistency, then by average column count
   results.sort((a, b) => {
     // First prioritize consistency
@@ -369,18 +380,17 @@ export const detectCSVDelimiter = async ({
     // If consistency is the same, prefer the one with more columns
     return b.avgColumns - a.avgColumns;
   });
-  
+
   // Return the best match
   const bestMatch = results[0];
-  
+
   return {
     delimiter: bestMatch.delimiter,
     confidence: bestMatch.consistency,
-    possibleDelimiters: results.map(r => ({
+    possibleDelimiters: results.map((r) => ({
       delimiter: r.delimiter,
       consistency: r.consistency,
-      avgColumns: r.avgColumns
-    }))
+      avgColumns: r.avgColumns,
+    })),
   };
 };
-
