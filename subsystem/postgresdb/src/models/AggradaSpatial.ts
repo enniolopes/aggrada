@@ -1,9 +1,14 @@
 import { mapper } from '@simple4decision/aggrada-core';
-import { Column, DataType, HasMany, Model, Table } from '@ttoss/postgresdb';
+import {
+  Column,
+  DataType,
+  /* HasMany, */ Model,
+  Table,
+} from '@ttoss/postgresdb';
 // import { CoreFile } from './CoreFile';
 import { Geometry } from 'geojson';
 
-import { AggradaObservation } from './AggradaObservation';
+// import { AggradaObservation } from './AggradaObservation';
 
 // Move these to a separate constants file
 const adminLevels = [...Object.keys(mapper.adminLevelMap), 'unknown'] as const;
@@ -35,6 +40,17 @@ type SRID = (typeof sridValues)[number];
     {
       fields: ['geo_code'],
       name: 'aggrada_spatials_geo_code_idx',
+    },
+    // Índices para performance da query de agregação
+    {
+      fields: ['raw_geometry'],
+      using: 'GIST',
+      name: 'idx_aggrada_spatials_raw_geometry',
+    },
+    {
+      fields: ['id'],
+      unique: true,
+      name: 'idx_aggrada_spatials_id',
     },
   ],
 })
@@ -123,8 +139,8 @@ export class AggradaSpatial extends Model {
   /**
    * References to observations within this spatial boundary
    */
-  @HasMany(() => {
-    return AggradaObservation;
-  })
-  aggrada_observations?: AggradaObservation[];
+  // @HasMany(() => {
+  //   return AggradaObservation;
+  // })
+  // aggrada_observations?: AggradaObservation[];
 }

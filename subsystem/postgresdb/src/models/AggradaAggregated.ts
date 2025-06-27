@@ -6,6 +6,36 @@ import { AggradaSpatial } from './AggradaSpatial';
   tableName: 'aggrada_aggregateds',
   underscored: true,
   freezeTableName: true,
+  indexes: [
+    // Índice para o ON CONFLICT (chave composta única)
+    {
+      fields: [
+        'spatial_id',
+        'spatial_geo_code',
+        'spatial_subdivision',
+        'time_start_date',
+        'time_end_date',
+        'key',
+      ],
+      unique: true,
+      name: 'idx_aggrada_aggregateds_conflict',
+    },
+    // Índices para consultas por log_id
+    {
+      fields: ['log_id'],
+      name: 'idx_aggrada_aggregateds_log_id',
+    },
+    // Índices para consultas temporais
+    {
+      fields: ['time_start_date', 'time_end_date'],
+      name: 'idx_aggrada_aggregateds_temporal',
+    },
+    // Índice para spatial_id (FK)
+    {
+      fields: ['spatial_id'],
+      name: 'idx_aggrada_aggregateds_spatial_id',
+    },
+  ],
 })
 export class AggradaAggregated extends Model {
   /**

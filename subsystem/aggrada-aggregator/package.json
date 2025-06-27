@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "dotenv": "^16.4.5",
+    "sequelize": "^6.37.7",
     "tsup": "^8.0.2",
     "tsx": "4.19.1",
     "typescript": "^5.5.4"

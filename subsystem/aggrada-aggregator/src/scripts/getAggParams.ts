@@ -1,9 +1,12 @@
 /* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import 'dotenv/config';
 
-import { db } from '../db';
-// import { Op } from 'sequelize';
 import { transformer } from '@simple4decision/aggrada-core';
+import { QueryTypes } from 'sequelize';
+
+import { db } from '../db';
 // import { models } from '@simple4decision/postgresdb';
 
 export type AggConfig = {
@@ -19,6 +22,7 @@ export type AggConfig = {
   };
   timeGranularity: string;
   logId?: string;
+  coreFiles?: string[];
 };
 
 export const getAggParams = async (
@@ -40,21 +44,24 @@ export const getAggParams = async (
   // Prepare the geometry safely for the query
   // const aoiGeometry = JSON.stringify(aoiSpatialRecord.geometry).replace(/'/g, "''");
 
-  const subdivisions = await db.AggradaSpatial.findAll({
-    // where: {
-    //   admin_level: aggConfig.subdivision,
-    //   source: aggConfig.subdivisionSource,
-    //   [Op.and]: db.sequelize.literal(`
-    //     ST_Area(ST_Intersection(geometry, ST_GeomFromGeoJSON('${aoiGeometry}'))) >= 0.95 * ST_Area(geometry)
-    //     AND ST_Area(geometry) <= 1.05 * ST_Area(ST_GeomFromGeoJSON('${aoiGeometry}'))
-    //   `),
-    // },
-    where: {
-      admin_level: aggConfig.subdivision,
-      source: aggConfig.subdivisionSource,
-    },
-    attributes: ['id', 'geo_code', 'source', 'start_date'],
-  });
+  const subdivisions = (await db.sequelize.query(
+    `
+    SELECT DISTINCT ON (geo_code) id, geo_code, source, start_date
+    FROM aggrada_spatials 
+    WHERE admin_level = :admin_level 
+      AND source = :source 
+      AND start_date < :start_date
+    ORDER BY geo_code, start_date DESC
+  `,
+    {
+      replacements: {
+        admin_level: aggConfig.subdivision,
+        source: aggConfig.subdivisionSource,
+        start_date: aggConfig.timeRange.start,
+      },
+      type: QueryTypes.SELECT,
+    }
+  )) as any[];
 
   if (!subdivisions || subdivisions.length === 0) {
     throw new Error('No subdivisions found for the given AOI');

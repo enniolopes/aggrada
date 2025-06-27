@@ -1,5 +1,5 @@
 import {
-  BelongsTo,
+  // BelongsTo,
   Column,
   DataType,
   ForeignKey,
@@ -20,7 +20,7 @@ interface ObservationData {
   [key: string]: any; // Flexible structure to accommodate various observation types
 }
 
-type DateDB = Date | String;
+type DateDB = Date | string;
 
 /**
  * AggradaObservation represents a time-series observation tied to a spatial entity.
@@ -43,14 +43,27 @@ type DateDB = Date | String;
       name: 'aggrada_observations_temporal_range_tz_gist',
     },
     {
+      fields: ['core_file', 'data_hash'],
+      unique: true,
+      name: 'aggrada_observations_unique_file_data',
+    },
+    // Índices para performance da query de agregação
+    {
       fields: ['temporal_range'],
       using: 'GIST',
       name: 'aggrada_observations_temporal_range_gist',
     },
     {
-      fields: ['core_file', 'data_hash'],
-      unique: true,
-      name: 'aggrada_observations_unique_file_data',
+      fields: ['aggrada_spatials_id'],
+      name: 'idx_aggrada_observations_spatial_id',
+    },
+    {
+      fields: ['core_file'],
+      name: 'idx_aggrada_observations_core_file',
+    },
+    {
+      fields: ['core_file', 'aggrada_spatials_id'],
+      name: 'idx_aggrada_observations_core_spatial',
     },
   ],
   // hooks: {
@@ -115,6 +128,13 @@ type DateDB = Date | String;
   //           AND data IS NOT NULL;
   //       `)) as [unknown, { rowCount?: number }];
 
+  //       // Criar índice GIN para operações JSONB após criação da função trigger
+  //       console.log('Creating JSONB index for data operations...');
+  //       await db.sequelize.query(`
+  //         CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_aggrada_observations_data_gin
+  //         ON aggrada_observations USING GIN (data);
+  //       `);
+
   //       console.log('Trigger function and trigger created successfully');
   //       console.log(
   //         `Updated ${updateResult[1].rowCount || 0} existing records with data_hash`
@@ -136,10 +156,10 @@ export class AggradaObservation extends Model {
   })
   aggrada_spatials_id: number;
 
-  @BelongsTo(() => {
-    return AggradaSpatial;
-  })
-  aggrada_spatials: AggradaSpatial;
+  // @BelongsTo(() => {
+  //   return AggradaSpatial;
+  // })
+  // aggrada_spatials: AggradaSpatial;
 
   @Column({
     type: DataType.RANGE(DataType.DATE),
